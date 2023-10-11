@@ -1,0 +1,11 @@
+{% extends 'cabinet/cabinet_default.html'%}{% load static %}
+{% block content %}
+          <div class="cabinet-nav-main">
+            <a href="{% url 'my_data' %}" class="nav-main"><img src="{% static 'img/analytics 1.svg' %}" alt="">Мои данные</a>
+            <a href="{% url 'myadress' %}" class="nav-main"><img src="{% static 'img/adress 1.svg' %}" alt="">Мои адреса</a>
+            <a href="{% url 'favorite' %}" class="nav-main"><img src="{% static 'img/Group 150.svg' %}" alt="">Избранное</a>
+            <a href="#" class="nav-main" style="opacity: 0.2;"><img src="{% static 'img/list 1.svg' %}" alt="">История заказов</a>
+            <a href="#" class="nav-main" style="opacity: 0.2;"><img src="{% static 'img/gift-card 1.svg' %}" alt="">Мои бонусы</a>
+            <a href="#" class="nav-main" style="opacity: 0.2;"><img src="{% static 'img/add-user 1.svg' %}" alt="">Подписки</a>
+          </div>
+{% endblock %}

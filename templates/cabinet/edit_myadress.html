@@ -1,0 +1,144 @@
+{% extends 'cabinet/cabinet_default.html' %}{% load static %}
+{% block content %}
+
+    <div class="content-adress">
+
+
+
+        <h1 style="    margin: auto auto 20px auto;">Редактирование адреса</h1>
+    <form method="post" style="padding: 0px 0px 20px 0px;margin: 0px 0px 20px 0px;">
+        {% csrf_token %}
+            <div class="user-input">
+              <p>Название</p>
+                {{form.title}}
+            </div>
+                    <div class="user-input">
+              <p>Город</p>
+                {{form.city}}
+            </div>
+                    <div class="user-input">
+              <p>Регион</p>
+                {{form.region}}
+            </div>
+            <div class="user-input">
+              <p>Метро</p>
+                {{form.metro}}
+            </div>
+            <div class="user-input">
+              <p>Улица</p>
+                {{form.street}}
+            </div>
+            <div class="user-input">
+              <p>Номер дома</p>
+                {{ form.home_number }}
+            </div>
+            <div class="user-input">
+              <p>Номер квартиры</p>
+                {{ form.room_number }}
+            </div>
+                    <div class="user-input">
+              <p>Индекс</p>
+                {{ form.index }}
+            </div>
+                            <div class="user-input" style="width: 100%;">
+              <p>Дополнительная информация</p>
+                {{ form.info }}
+            </div>
+
+            <button type="submit">СОХРАНИТЬ</button>
+
+    </form>
+ <a href="{% url 'myadress' %}" style="width: 100%;text-align: center;margin: 0 auto;display: flex;justify-content: center;">Отмена</a>
+
+
+    </div>
+{#    <!-- HTML-шаблон -->#}
+{#<div class="new-address-button">#}
+{#    <button id="openModalButton">СОЗДАТЬ</button>#}
+{#</div>#}
+
+    <style>
+    .user-input {
+    width: 48%;
+    float: left;
+    margin: 0% 2% 0% 0%;
+}
+    input[type=number]{
+        border: 2px solid #00B44E;
+    border-radius: 25px;
+    padding: 20px 20px 20px 20px;
+    width: 100%;
+    font-size: 20px;
+    box-sizing: border-box;
+    }
+    .cabinet-content form{
+        max-width: 100%;
+    }
+.dropdown {
+  display: inline-block;
+  position: relative;
+}
+
+.dd-button {
+
+}
+
+.dd-button:after {
+
+}
+
+.dd-button:hover {
+
+}
+
+
+.dd-input {
+  display: none;
+}
+
+.dd-menu {
+  position: absolute;
+  top: 100%;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  padding: 0;
+  margin: 2px 0 0 0;
+  box-shadow: 0 0 6px 0 rgba(0,0,0,0.1);
+  background-color: #ffffff;
+  list-style-type: none;
+    z-index: 9;
+    right: 0%;
+}
+
+.dd-input + .dd-menu {
+  display: none;
+}
+
+.dd-input:checked + .dd-menu {
+  display: block;
+}
+
+.dd-menu li {
+  padding: 10px 20px;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.dd-menu li:hover {
+  background-color: #f6f6f6;
+}
+
+.dd-menu li a {
+  display: block;
+  margin: -10px -20px;
+  padding: 10px 20px;
+}
+
+.dd-menu li.divider{
+  padding: 0;
+  border-bottom: 1px solid #cccccc;
+}
+    </style>
+
+
+{% endblock %}

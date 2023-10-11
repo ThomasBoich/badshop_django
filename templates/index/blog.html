@@ -1,0 +1,32 @@
+{% extends 'default.html' %}
+{% block content %}
+<div class="content blog">
+    <nav>
+      <div class="breadcrumbs">
+        <a href="{% url 'index' %}">Главная »</a>
+        <a href="{% url 'blog' %}">Блог</a>
+      </div>
+    </nav>
+    <h1>Блог</h1>
+    <div class="blog-layer">
+        {%for post in posts%}
+        <a href="{% url 'blogPage' post.id %}" class="item-link">
+            <div class="blog-item" style="
+                    {% if post.image%}
+                        background: url('{{post.image.url}}')
+                    {% endif %}
+                    ">
+              <div class="blog-info">
+                <div class="info-layer">
+                  <span>{{post.publish_date}}</span>
+                  <p>{{post.title}}
+                  </p>
+                </div>
+              </div>
+              <div class="blog-preview" style=""></div>
+            </div>
+          </a>
+        {%endfor%}
+    </div>
+  </div>
+{% endblock %}

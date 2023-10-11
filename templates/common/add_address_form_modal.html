@@ -1,0 +1,56 @@
+          <!-- Модальное окно -->
+<div id="addAddressModal" class="modalAddress">
+    <div class="modal-content">
+        <div style="    display: flex;
+    align-items: center;">        <span class="close" id="closeModal">&times;</span>
+        <h2>Добавление нового адреса</h2></div>
+
+        <form id="addressForm" method="post">
+            {% csrf_token %}
+            <div class="user-input">
+              <p>Название</p>
+                {{form.title}}
+            </div>
+                    <div class="user-input">
+              <p>Город</p>
+                {{form.city}}
+            </div>
+                    <div class="user-input">
+              <p>Регион</p>
+                {{form.region}}
+            </div>
+            <div class="user-input">
+              <p>Метро</p>
+                {{form.metro}}
+            </div>
+            <div class="user-input">
+              <p>Улица</p>
+                {{form.street}}
+            </div>
+            <div class="user-input">
+              <p>Номер дома</p>
+                {{ form.home_number }}
+            </div>
+            <div class="user-input">
+              <p>Номер квартиры</p>
+                {{ form.room_number }}
+            </div>
+                    <div class="user-input">
+              <p>Индекс</p>
+                {{ form.index }}
+            </div>
+                            <div class="user-input" style="width: 100%;margin:0px 0px 20px 0px;">
+              <p>Дополнительная информация</p>
+                {{ form.info }}
+            </div>
+
+            <button type="submit" style="background-color: #00B44E;
+    color: #FFFFFF;
+    border-radius: 100px;border: #00b44e;
+    padding: 9px 20px 9px 20px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;">СОЗДАТЬ</button>
+        </form>
+    </div>
+</div>

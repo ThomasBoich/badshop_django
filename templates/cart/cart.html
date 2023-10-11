@@ -1,0 +1,270 @@
+{% extends 'default.html' %}
+
+{% block content %}
+
+{#    sdfdsf#}
+
+      <div class="cart-content">
+        <form action="">
+
+        <div class="cart-items">
+
+            <div class="cart-list">
+              <div class="cart-hover">
+                <input type="checkbox" id="select-all"><label for="">Выбрать все</label>
+              </div>
+
+
+                    {% for item in items %}
+
+
+
+
+                    <div class="cart-item">
+                      <div class="cart-img">
+                        <input type="checkbox" id="">
+                          {% if item.item.image %}
+                          	 <img src="{{item.item.image.url}}" alt="">
+                          {% endif %}
+
+                      </div>
+                      <div class="item-hover">
+                      <h2>{{ item.item.name }}</h2>
+                      <div class="del-item">
+                        <img src="static/img/X.svg" alt="">
+                      </div>
+                      <div class="item-count">
+                        <div class="number" data-step="1" data-min="1" data-max="100">
+                          <input class="number-text" type="text" name="count" value="1">
+                          <a href="#" class="number-minus">−</a>
+                          <a href="#" class="number-plus">+</a>
+                        </div>
+                        <div class="summ">
+                          1200 ₽ \ шт.
+                        </div>
+                      </div>
+                    </div>
+                    </div>
+
+
+
+{% endfor %}
+
+
+
+
+{#                    <div class="cart-item">#}
+{#                      <div class="cart-img">#}
+{#                        <input type="checkbox" id="">#}
+{#                        <img src="static/img/IMG_7361 1.png" alt="">#}
+{#                      </div>#}
+{#                      <div class="item-hover">#}
+{#                      <h2>ВИТАМИН D3 (экстракты ивы и ромашки), БАД для суставов, 120 капсул </h2>#}
+{#                      <div class="del-item">#}
+{#                        <img src="static/img/X.svg" alt="">#}
+{#                      </div>#}
+{#                      <div class="item-count">#}
+{#                        <div class="number" data-step="1" data-min="1" data-max="100">#}
+{#                          <input class="number-text" type="text" name="count" value="1">#}
+{#                          <a href="#" class="number-minus">−</a>#}
+{#                          <a href="#" class="number-plus">+</a>#}
+{#                        </div>#}
+{#                        <div class="summ">#}
+{#                          1200 ₽ \ шт.#}
+{#                        </div>#}
+{#                      </div>#}
+{#                    </div>#}
+{#                    </div>#}
+{#                    <div class="cart-item">#}
+{#                      <div class="cart-img">#}
+{#                        <input type="checkbox" id="">#}
+{#                        <img src="static/img/IMG_7361 1.png" alt="">#}
+{#                      </div>#}
+{#                      <div class="item-hover">#}
+{#                      <h2>ВИТАМИН D3 (экстракты ивы и ромашки), БАД для суставов, 120 капсул </h2>#}
+{#                      <div class="del-item">#}
+{#                        <img src="static/img/X.svg" alt="">#}
+{#                      </div>#}
+{#                      <div class="item-count">#}
+{#                        <div class="number" data-step="1" data-min="1" data-max="100">#}
+{#                          <input class="number-text" type="text" name="count" value="1">#}
+{#                          <a href="#" class="number-minus">−</a>#}
+{#                          <a href="#" class="number-plus">+</a>#}
+{#                        </div>#}
+{#                        <div class="summ">#}
+{#                          1200 ₽ \ шт.#}
+{#                        </div>#}
+{#                      </div>#}
+{#                    </div>#}
+{#                    </div>#}
+{#                    <div class="cart-item">#}
+{#                      <div class="cart-img">#}
+{#                        <input type="checkbox" id="">#}
+{#                        <img src="static/img/IMG_7361 1.png" alt="">#}
+{#                      </div>#}
+{#                      <div class="item-hover">#}
+{#                      <h2>ВИТАМИН D3 (экстракты ивы и ромашки), БАД для суставов, 120 капсул </h2>#}
+{#                      <div class="del-item">#}
+{#                        <img src="static/img/X.svg" alt="">#}
+{#                      </div>#}
+{#                      <div class="item-count">#}
+{#                        <div class="number" data-step="1" data-min="1" data-max="100">#}
+{#                          <input class="number-text" type="text" name="count" value="1">#}
+{#                          <a href="#" class="number-minus">−</a>#}
+{#                          <a href="#" class="number-plus">+</a>#}
+{#                        </div>#}
+{#                        <div class="summ">#}
+{#                          1200 ₽ \ шт.#}
+{#                        </div>#}
+{#                      </div>#}
+{#                    </div>#}
+{#                    </div>#}
+{#                    <div class="cart-item">#}
+{#                      <div class="cart-img">#}
+{#                        <input type="checkbox" id="">#}
+{#                        <img src="static/img/IMG_7361 1.png" alt="">#}
+{#                      </div>#}
+{#                      <div class="item-hover">#}
+{#                      <h2>ВИТАМИН D3 (экстракты ивы и ромашки), БАД для суставов, 120 капсул </h2>#}
+{#                      <div class="del-item">#}
+{#                        <img src="static/img/X.svg" alt="">#}
+{#                      </div>#}
+{#                      <div class="item-count">#}
+{#                        <div class="number" data-step="1" data-min="1" data-max="100">#}
+{#                          <input class="number-text" type="text" name="count" value="1">#}
+{#                          <a href="#" class="number-minus">−</a>#}
+{#                          <a href="#" class="number-plus">+</a>#}
+{#                        </div>#}
+{#                        <div class="summ">#}
+{#                          1200 ₽ \ шт.#}
+{#                        </div>#}
+{#                      </div>#}
+{#                    </div>#}
+{#                    </div>#}
+{#                    <div class="cart-item">#}
+{#                      <div class="cart-img">#}
+{#                        <input type="checkbox" id="">#}
+{#                        <img src="static/img/IMG_7361 1.png" alt="">#}
+{#                      </div>#}
+{#                      <div class="item-hover">#}
+{#                      <h2>ВИТАМИН D3 (экстракты ивы и ромашки), БАД для суставов, 120 капсул </h2>#}
+{#                      <div class="del-item">#}
+{#                        <img src="static/img/X.svg" alt="">#}
+{#                      </div>#}
+{#                      <div class="item-count">#}
+{#                        <div class="number" data-step="1" data-min="1" data-max="100">#}
+{#                          <input class="number-text" type="text" name="count" value="1">#}
+{#                          <a href="#" class="number-minus">−</a>#}
+{#                          <a href="#" class="number-plus">+</a>#}
+{#                        </div>#}
+{#                        <div class="summ">#}
+{#                          1200 ₽ \ шт.#}
+{#                        </div>#}
+{#                      </div>#}
+{#                    </div>#}
+{#                    </div>#}
+
+          </div>
+            <div class="cart-info">
+              <div class="promo">
+                <input type="text" placeholder="Промокод">
+                <button>ПРИМЕНИТЬ</button>
+              </div>
+              <div class="bonus-pay">
+                <div class="bonus">
+                  <input type="checkbox">
+                  <label for="">Оплатить бонусами</label>
+                </div>
+                <p>Доступно 20 бонусов</p>
+              </div>
+              <div class="comment">
+                <input type="text" placeholder="Оставьте комментарий к заказу">
+              </div>
+              <div class="cart-price">
+                <div class="count">
+                  <span>
+                    2 товара на сумму
+                  </span>
+                  <span>1700 ₽</span>
+                </div>
+                <div class="sail">
+                  Скидка <span>300 ₽</span>
+                </div>
+                <div class="summa">
+                  Итого <span>1400 ₽</span>
+                </div>
+              </div>
+              <button type="submit">ОФОРМИТЬ ЗАКАЗ</button>
+            </div>
+          </div>
+      </form>
+      <script>
+        // Находим элементы формы
+      var selectAllCheckbox = document.getElementById('select-all');
+      var checkboxes = document.querySelectorAll('input[type=checkbox]');
+
+      // Привязываем обработчик события "click" к флажку "выбрать все"
+      selectAllCheckbox.addEventListener('click', function(event) {
+      // Обходим все элементы формы с флажком checkbox
+      for(var i = 0; i < checkboxes.length; i++) {
+      // Устанавливаем свойство "checked" для всех элементов формы с флажком
+      checkboxes[i].checked = selectAllCheckbox.checked;
+      }
+      });
+      </script>
+      </div>
+    </div>
+
+
+
+      <style>
+    .number {
+	user-select: none;
+	position: relative;
+	text-align: left;
+	padding: 0;
+	width: 140px;
+	display: inline-block;
+  border: 1px solid #00b44e;
+  border-radius: 5px;
+  margin: 0px 20px 0px 0px;
+}
+.number-minus, .number-plus {
+	position: absolute;
+	top: 0;
+	width: 40px;
+	height: 32px;
+	line-height: 32px;
+	display: block;
+	font-size: 20px;
+	font-weight: 600;
+	text-align: center;
+	font-family: arial;
+  color: #CCCCCC;
+	text-decoration: none;
+}
+.number-minus {
+	left: 0;
+}
+.number-plus {
+	right: 0;
+}
+
+.number-text{
+	display: inline-block;
+	font-size: 14px;
+	color: #000;
+	line-height: 32px;
+	height: 32px;
+	padding: 0;
+	margin: 0 0 0 42px;
+	background: #fff;
+	outline: none;
+	border: none;
+	width: 57px;
+	text-align: center;
+}
+  </style>
+
+
+{% endblock %}

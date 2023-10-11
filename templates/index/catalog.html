@@ -1,0 +1,24 @@
+{% extends 'default.html' %}{%load static%}
+{% block content %}
+<div class="content catalog">
+    <nav>
+      <div class="breadcrumbs">
+        <a href="{% url 'index' %}">Главная »</a>
+        <a href="{% url 'catalog' %}">Каталог</a>
+      </div>
+    </nav>
+    <h1>Каталог</h1>
+    <div class="catalog-items">
+        {%for category in categories%}
+      <a href="{% url 'catalog_page' category.id %}" class="catalog-link">
+        <div class="catalog-item catalog_items_layer_gh">
+            {% if category.image %}
+                <img src="{{category.image.url}}" alt="">
+            {% endif %}
+          <span>{{category.title}}</span>
+        </div>
+      </a> 
+        {%endfor%}
+    </div>
+  </div>
+{% endblock %}

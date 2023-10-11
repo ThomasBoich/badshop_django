@@ -1,0 +1,214 @@
+{% extends 'default.html' %}
+{% block content %}{% load static %}
+<div class="container" style="height: 535px;width:90%;margin: 0 auto;border-radius: 50px;overflow:hidden;max-width: 1790px;">
+    <div class="swiper mySwiper">
+      <div class="swiper-wrapper">
+
+        {% for slider in slider1 %}
+        
+                <!-- slide-number-1 -->
+                <div class="swiper-slide">
+                  <div class="image-box">
+                    <img src="{{slider.image.url}}" alt="restaurant" />
+                    <div class="centered-text">
+                      <div class="text-wrapper">
+                        {{slider.title}}
+                        <p>{{slider.text}}</p>
+                      </div>
+                      <div class="button-wrapper">
+                        <a href=""><button>ПЕРЕЙТИ В КАТАЛОГ</button></a>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+        {% endfor %}
+      </div>
+
+      <!-- rectangle-under-pagination -->
+      <svg class="rectangle" width="154" height="33" viewBox="0 0 154 33" fill="none"
+        xmlns="http://www.w3.org/2000/svg">
+        <path
+          d="M13.1492 12.9957C15.3255 5.56588 21.9046 0 29.6466 0H125.118C132.571 0 138.998 5.16164 141.261 12.2634C144.25 21.6506 148.867 33 153.711 33C161.97 33 -9.49755 33 0.41389 33C6.07606 33 10.4444 22.2302 13.1492 12.9957Z"
+          fill="white" />
+      </svg>
+
+      <!-- arrow-buttons -->
+      <div class="swiper-button-next swiper-navBtn"></div>
+      <div class="swiper-button-prev swiper-navBtn"></div>
+      
+      <!-- dot-pagination -->
+      <div class="swiper-pagination"></div>
+    </div>
+  </div>
+
+  <div class="carousel-wrap">
+    <span class="item-title">Товары со скидками</span>
+    <div class="owl-carousel">
+        {% for item in items_sails %}
+        <div class="item">
+            <div class="item-content">
+              <div class="item-img">
+                <div class="sale-button">{{ item.discount }} %</div>
+                <div class="like-button" id="addSessionFavoriteButton" data-item-id="{{ item.id }}"
+
+                     hx-get="{% url 'add_to_favorites' item.id %}"
+                     hx-target="#addSessionFavoriteButton"
+                     hx-swap="outerHTML"
+
+                >
+                  <img src="{% static '/img/like.svg' %}" class="like-img" class="like-img" alt="">
+                </div>
+                <a href="{% url 'item' item.id %}">
+                    {% if item.image %}
+                        <img src="{{item.image.url}}" class="image-item" alt="">
+                    {% else %}
+
+                    {% endif %}
+              </div>
+              <a href="{% url 'item' item.id %}">
+                <h2>{{ item.name }}</h2>
+              </a>
+              <div class="item-info">
+                <div class="item-price"><span>{{item.price}} ₽</span>{{item.seil_price}} ₽</div>
+                <div class="item-rating"><svg width="26" height="24" viewBox="0 0 26 24" fill="none"
+                    xmlns="http://www.w3.org/2000/svg">
+                    <path
+                      d="M12.0489 0.927052C12.3483 0.00574112 13.6517 0.00573993 13.9511 0.927051L16.1432 7.67376C16.2771 8.08578 16.661 8.36475 17.0943 8.36475H24.1882C25.1569 8.36475 25.5597 9.60436 24.7759 10.1738L19.0369 14.3435C18.6864 14.5981 18.5397 15.0495 18.6736 15.4615L20.8657 22.2082C21.1651 23.1295 20.1106 23.8956 19.3269 23.3262L13.5878 19.1565C13.2373 18.9019 12.7627 18.9019 12.4122 19.1565L6.67312 23.3262C5.88941 23.8956 4.83493 23.1295 5.13428 22.2082L7.32642 15.4615C7.46029 15.0495 7.31363 14.5981 6.96315 14.3435L1.22405 10.1738C0.440337 9.60436 0.843112 8.36475 1.81184 8.36475H8.90575C9.33897 8.36475 9.72293 8.08578 9.8568 7.67376L12.0489 0.927052Z"
+                      fill="#FFB800" />
+                  </svg>
+                  {{item.rating}}
+                </div>
+              </div>
+              <a href="" class="item-buy">КУПИТЬ</a>
+            </div>
+          </div>
+          {% endfor %}
+    </div>
+  </div>
+
+  <div class="carousel-wrap categoties-item">
+    <span class="item-title">Категории товаров</span>
+    <div class="owl-carousel">
+
+    {% for category in categories %}
+    
+    <div class="item">
+      <div class="item-content">
+        <div class="item-img categoties-item">
+          <a href="item.html"></a>
+          <a href=""><img src="{%if category.image.url != '' %}{{category.image.url}}{%endif%}" class="image-item" alt=""></a>
+          <p>{{category.title}}</p>
+        </div>
+      </div>
+    </div>
+    
+    {% endfor %}
+
+    </div>
+  </div>
+
+  <div class="container" style="height: 475px;width:90%;margin: 0 auto;border-radius: 150px;overflow:hidden;max-width: 1790px;">
+    <div class="swiper mySwiper">
+      <div class="swiper-wrapper">
+      
+      {% for slider in slider2 %}
+      
+              <!-- slide-number-1 -->
+              <div class="swiper-slide">
+                <div class="image-box">
+                  <img src="{{slider.image.url}}" alt="restaurant" />
+                  <div class="centered-text">
+                    <div class="text-wrapper">
+                      {{slider.title}}
+                      <p>{{slider.text}}</p>
+                    </div>
+                    <div class="button-wrapper">
+                      <a href=""><button>ПЕРЕЙТИ В КАТАЛОГ</button></a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+      {% endfor %}
+      </div>
+      <!-- rectangle-under-pagination -->
+      <svg class="rectangle" width="154" height="33" viewBox="0 0 154 33" fill="none"
+        xmlns="http://www.w3.org/2000/svg">
+        <path
+          d="M13.1492 12.9957C15.3255 5.56588 21.9046 0 29.6466 0H125.118C132.571 0 138.998 5.16164 141.261 12.2634C144.25 21.6506 148.867 33 153.711 33C161.97 33 -9.49755 33 0.41389 33C6.07606 33 10.4444 22.2302 13.1492 12.9957Z"
+          fill="white" />
+      </svg>
+      <!-- arrow-buttons -->
+      <div class="swiper-button-next swiper-navBtn"></div>
+      <div class="swiper-button-prev swiper-navBtn"></div>
+      <!-- dot-pagination -->
+      <div class="swiper-pagination"></div>
+    </div>
+  </div>
+
+  <div class="carousel-wrap">
+    <span class="item-title">Популярные товары</span>
+    <div class="owl-carousel">
+    {% for item in popular_items %}
+      <div class="item">
+        <div class="item-content">
+          <div class="item-img">
+            <div class="sale-button">{{item.discount}}%</div>
+            <div class="like-button" id="addFavoriteButton" data-item-id="{{ item.id }}">
+              <img src="static/img/like.svg" class="like-img" alt="">
+            </div>
+            <a href="{% url 'item' item.id %}">
+                {% if item.image %}
+                	<img src="{{item.image.url}}" class="image-item" alt="">
+                {% endif %}
+
+            </a>
+          </div>
+          <a href="{% url 'item' item.id %}">
+            <h2>{{item.name}} </h2>
+          </a>
+          <div class="item-info">
+            <div class="item-price"><span>{{item.price}} ₽</span>{{item.seil_price}} ₽</div>
+            <div class="item-rating"><svg width="26" height="24" viewBox="0 0 26 24" fill="none"
+                xmlns="http://www.w3.org/2000/svg">
+                <path
+                  d="M12.0489 0.927052C12.3483 0.00574112 13.6517 0.00573993 13.9511 0.927051L16.1432 7.67376C16.2771 8.08578 16.661 8.36475 17.0943 8.36475H24.1882C25.1569 8.36475 25.5597 9.60436 24.7759 10.1738L19.0369 14.3435C18.6864 14.5981 18.5397 15.0495 18.6736 15.4615L20.8657 22.2082C21.1651 23.1295 20.1106 23.8956 19.3269 23.3262L13.5878 19.1565C13.2373 18.9019 12.7627 18.9019 12.4122 19.1565L6.67312 23.3262C5.88941 23.8956 4.83493 23.1295 5.13428 22.2082L7.32642 15.4615C7.46029 15.0495 7.31363 14.5981 6.96315 14.3435L1.22405 10.1738C0.440337 9.60436 0.843112 8.36475 1.81184 8.36475H8.90575C9.33897 8.36475 9.72293 8.08578 9.8568 7.67376L12.0489 0.927052Z"
+                  fill="#FFB800" />
+              </svg>
+              {{item.rating}}
+            </div>
+          </div>
+          <a href="" class="item-buy">КУПИТЬ</a>
+        </div>
+      </div>
+    {% endfor %}
+    </div>
+  </div>
+
+
+
+
+
+
+  <div class="carousel-wrap">
+    <span class="item-title">Бренды</span>
+    <div class="owl-carousel">
+      {%for brend in brends%}
+      <div class="item">
+        <div class="item-content">
+          <div class="item-img categoties-item">
+            <a href="item.html"></a>
+            <a href=""><img src="{%if brend.image.url != '' %}{{brend.image.url}}{%endif%}" class="image-item" alt=""></a>
+            <p>{{brend.name}}</p>
+          </div>
+        </div>
+      </div>
+      {%endfor%}
+    </div>
+  </div>
+
+
+
+
+
+{% endblock %}

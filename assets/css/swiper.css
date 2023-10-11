@@ -1,0 +1,180 @@
+/* swiper */
+.swiper {
+    overflow: hidden;
+    width: 100%;
+    height: 100%;
+    position: relative;
+    border-radius: 8px;
+  }
+  .swiper-slide .image-box {
+    height: 100%;
+    position: relative;
+    text-align: center;
+  }
+  .swiper-slide .image-box::before {
+    content: "";
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    background-color: rgba(0, 0, 0, 55%);
+    bottom: 0;
+    right: 0;
+  }
+  .image-box .centered-text {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    left: 15%;
+    transform: translate(-25%, -50%);
+    /* font-weight: 600; ------- عدد میدم نمی دونم چرا کار نمی کند فونت بی ریخت میشه! */
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+  }.image-box .centered-text p{font-size: 20px;max-width: 350px;text-wrap: wrap;font-weight: 400;}
+  .text-wrapper {
+    color: #ffffff;
+    color: #000000;
+    font-weight: bold;
+    font-size: 40px;
+    white-space: nowrap;
+    text-align: left;
+  }
+  .centered-text .button-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: fit-content;
+  }
+  .centered-text .button-wrapper button {
+    border: 0;
+    outline: 0;
+    cursor: pointer;
+    background-color: #417f56;
+    background-color: #00B44E;
+    padding: 20px 35px 20px 35px;
+    color: #fff;
+    border-radius: 50px;
+    height: 67px;
+    font-size: 20px;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+  }
+  .centered-text .button-wrapper button:hover{
+    background-color: #02ca59;
+  }
+  .swiper-slide .image-box img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  .swiper-navBtn {
+    color: #fff;
+    height: 40px;
+    width: 40px;
+    /* background-color: #fff; */
+    border-radius: 50%;
+  }
+  .swiper-navBtn::before,
+  .swiper-navBtn::after {
+    font-size: 25px;
+  }
+  .swiper-pagination-bullet {
+    background-color: #adadad;
+    width: 12px;
+    height: 12px;
+  }
+  .swiper-pagination-bullet-active {
+    background-color: #417f56;
+    border: 2px solid #e5f2e9;
+  }
+  /* rectangle */
+  .rectangle {
+    position: absolute;
+    z-index: 2;
+    bottom: -17px;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+  /* media-query */
+  @media only screen and (max-width: 768px) {
+    .container {
+      padding: 10px;
+      max-width: 356px;
+      width: 100%;
+    }
+    .swiper-navBtn {
+      display: none;
+    }
+    .text-wrapper {
+      font-size: 21px;
+      white-space: wrap;
+      text-align: left;
+    }
+    .image-box .centered-text {
+      width: 95%;
+    }
+  }
+  a.github-link{
+    position:fixed;
+   bottom:40px;
+    left:40px;
+    background-color:red;
+    padding:9px;
+    color:#fff;
+    z-index:999;
+  }
+  .swiper-button-next, .swiper-button-prev{
+    color: #FFFFFF;
+  }
+
+  .swiper-slide .image-box::before{
+    background-color: transparent;
+  }
+
+  
+  swiper-container {
+    width: 100%;
+    height: 100%;
+  }
+
+  swiper-slide {
+    text-align: center;
+    font-size: 18px;
+    background: #fff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #F0F0F0;
+  }
+
+  swiper-slide img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  swiper-container {
+    width: 100%;
+    height: 300px;
+    margin: 20px auto;
+  }
+
+  .append-buttons {
+    text-align: center;
+    margin-top: 20px;
+  }
+
+  .append-buttons button {
+    display: inline-block;
+    cursor: pointer;
+    border: 1px solid #007aff;
+    color: #007aff;
+    text-decoration: none;
+    padding: 4px 10px;
+    border-radius: 4px;
+    margin: 0 10px;
+    font-size: 13px;
+  }

@@ -1,0 +1,141 @@
+{% extends 'cabinet/cabinet_default.html' %}{% load static %}
+{% block content %}
+
+    <div class="content-adress">
+        <div class="adress-nav">
+          <div class="adress-title">Адреса<span>{{address_count}}</span></div>
+          <div class="new-adress" id="openModalButton" data-toggle="modal" data-target="#addAddressModal">СОЗДАТЬ</div>
+        </div>
+        {% if address %}
+
+        {% for ad in address %}
+            <div class="adress">
+            <div class="item-adress-title">
+                <div class="address_info">{{ ad.street }} {{ ad.home_number }}, {{ ad.room_number }}</div>
+
+
+                <div class="drop-down-address-actions">
+{#                    <img src="{% static 'img/address.svg' %}" alt="">#}
+
+                    <div class="drop-down-address-actions">
+
+                    </div>
+                    <label class="dropdown">
+
+                      <div class="dd-button">
+                            <img src="{% static 'img/address.svg' %}" alt="">
+                      </div>
+
+                      <input type="checkbox" class="dd-input" id="test">
+
+                      <ul class="dd-menu">
+                        <li><a href="{% url 'edit_myaddress' ad.id %}">Изменить</a></li>
+                        <li><a href="{% url 'delete_address' ad.id %}">Удалить</a></li>
+                      </ul>
+
+                    </label>
+                </div>
+            </div>
+            </div>
+        {% endfor %}
+
+
+        {% else %}
+            <div class="adress">
+              <div class="item-adress-title" style="justify-content: flex-start;">
+              <img src="{% static '/img/warning 1.svg' %}" alt="">Нет адресов
+
+            </div>
+            </div>
+
+        {% endif %}
+
+    </div>
+{#    <!-- HTML-шаблон -->#}
+{#<div class="new-address-button">#}
+{#    <button id="openModalButton">СОЗДАТЬ</button>#}
+{#</div>#}
+
+    <style>
+    .user-input {
+    width: 48%;
+    float: left;
+    margin: 0% 2% 0% 0%;
+}
+        input[type=number]{
+        border: 2px solid #00B44E;
+    border-radius: 25px;
+    padding: 20px 20px 20px 20px;
+    width: 100%;
+    font-size: 20px;
+    box-sizing: border-box;
+    }
+.dropdown {
+  display: inline-block;
+  position: relative;
+}
+
+.dd-button {
+
+}
+
+.dd-button:after {
+
+}
+
+.dd-button:hover {
+    opacity: 0.9;
+    cursor: pointer;
+}
+
+
+.dd-input {
+  display: none;
+}
+
+.dd-menu {
+  position: absolute;
+  top: 100%;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  padding: 0;
+  margin: 2px 0 0 0;
+  box-shadow: 0 0 6px 0 rgba(0,0,0,0.1);
+  background-color: #ffffff;
+  list-style-type: none;
+    z-index: 9;
+    right: 0%;
+}
+
+.dd-input + .dd-menu {
+  display: none;
+}
+
+.dd-input:checked + .dd-menu {
+  display: block;
+}
+
+.dd-menu li {
+  padding: 10px 20px;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.dd-menu li:hover {
+  background-color: #f6f6f6;
+}
+
+.dd-menu li a {
+  display: block;
+  margin: -10px -20px;
+  padding: 10px 20px;
+}
+
+.dd-menu li.divider{
+  padding: 0;
+  border-bottom: 1px solid #cccccc;
+}
+    </style>
+
+
+{% endblock %}

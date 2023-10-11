@@ -1,0 +1,194 @@
+{% load static %}
+ </div>
+  <footer>
+    <div class="footer">
+      <div class="footer-nav">
+        <div class="nav-content">
+          <ul>
+            <li><span>Магазин</span></li>
+            <li><a href="">Популярные товары</a></li>
+            <li><a href="">Выгодные предложения</a></li>
+            <li><a href="">Просмотренные товары</a></li>
+            <li><a href="">Акции и объявления</a></li>
+          </ul>
+
+          <ul>
+            <li><span>Компания</span></li>
+            <li><a href="">О компании</a></li>
+            <li><a href="">Контакты</a></li>
+            <li><a href="">Новости</a></li>
+            <li><a href="">Партнерам</a></li>
+          </ul>
+        </div>
+
+        <div class="nav-info">
+          <a href=""><img src="{% static 'img/logo.svg' %}" alt=""></a>
+          <div class="footer-contacts">
+
+            <div class="drop-down">
+              Обратная связь
+            </div>
+            <div class="nav-phone">
+              <img src="{% static 'img/whatsapp.svg' %}" alt="">
+
+              8 (800) 555 35 35
+            </div>
+          </div>
+          <div class="footer-social">
+            <a href=""><img src="{% static 'img/free-icon-video-7209684 1.svg' %}" alt=""></a>
+            <a href=""><img src="{% static 'img/Group 128.svg' %}" alt=""></a>
+            <a href=""><img src="{% static 'img/Group 129.svg' %}" alt=""></a>
+          </div>
+        </div>
+      </div>
+      <div class="copiryght">
+        © ООО “Волна Здоровья” 2023
+        Все права защищены
+      </div>
+    </div>
+  </footer>
+
+  <script src="https://code.jquery.com/jquery-3.7.0.min.js"
+    integrity="sha256-2Pmvv0kuTBOenSvLm6bvfBSSHrUJ+3A7x6P5Ebd07/g=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.js"></script>
+  <script src="{% static 'js/swiper.js' %}"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js"></script>
+  <script src="
+https://cdn.jsdelivr.net/npm/owl.carousel@2.3.4/dist/owl.carousel.min.js
+"></script>
+  <script src="{% static 'js/owl.js' %}"></script>
+  <script src="{% static 'js/sripts.js' %}"></script>
+  <script src="{% static 'js/jquery.maskedinput.min.js' %}"></script>
+
+
+<script>
+  $(document).on('DOMContentLoaded', function () {
+    $('#id_phone').mask('+7 999 999-99-99')
+  })
+</script>
+    <style>
+    .modalAddress{
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.1);
+        position: fixed;
+        overflow: auto;
+        display: none;
+        z-index: 9999;
+    }.modalAddress .modal-content{
+        width: 90%;
+        max-width: 700px;
+        margin: 20vh auto;
+        background: #FFFFFF;
+        border-radius: 20px;
+        padding: 20px;
+        overflow-y: auto!IMPORTANT;
+        overflow: hidden;
+        height: max-content;
+
+         }
+
+     .modalAddress .modal-content .close{font-size: 48px;cursor: pointer;    width: max-content;
+    height: max-content;
+    display: inline-block;margin:0px 20px 0px 0px;}
+    </style>
+<script>
+    // Получаем элементы DOM
+    var openModalButton = document.getElementById('openModalButton');
+    var addAddressModal = document.getElementById('addAddressModal');
+    var closeModal = document.getElementById('closeModal');
+
+    // Функция для открытия модального окна
+    function openModal() {
+        addAddressModal.style.display = 'block';
+    }
+
+    // Функция для закрытия модального окна
+    function closeModalFunction() {
+        addAddressModal.style.display = 'none';
+    }
+
+    // Обработчик события для кнопки "СОЗДАТЬ"
+    openModalButton.addEventListener('click', openModal);
+
+    // Обработчик события для кнопки закрытия модального окна
+    closeModal.addEventListener('click', closeModalFunction);
+
+    // Обработчик события для закрытия модального окна при клике вне окна
+    window.addEventListener('click', function (event) {
+        if (event.target === addAddressModal) {
+            closeModalFunction();
+        }
+    });
+</script>
+<script>
+    document.getElementById('addFavoriteButton').addEventListener('click', function () {
+        const itemId = this.getAttribute('data-item-id');
+        const url = `/add_to_favorites/${itemId}/`;
+        fetch(url, { method: 'POST' })
+            .then(response => response.json())
+            .then(data => {
+                if (data.status === 'added') {
+                    alert('Товар добавлен в избранное');
+                } else if (data.status === 'already_exists') {
+                    alert('Товар уже в избранном');
+                }
+            });
+    });
+
+    document.getElementById('addSessionFavoriteButton').addEventListener('click', function () {
+        const itemId = this.getAttribute('data-item-id');
+        const url = `/add_to_session_favorites/${itemId}/`;
+        fetch(url, { method: 'POST' })
+            .then(response => response.json())
+            .then(data => {
+                if (data.status === 'added') {
+                    alert('Товар добавлен в избранное (сессия)');
+                } else if (data.status === 'already_exists') {
+                    alert('Товар уже в избранном (сессия)');
+                }
+            });
+    });
+</script>
+      <script>
+    $(document).ready(function() {
+	$('body').on('click', '.number-minus, .number-plus', function(){
+		var $row = $(this).closest('.number');
+		var $input = $row.find('.number-text');
+		var step = $row.data('step');
+		var val = parseFloat($input.val());
+		if ($(this).hasClass('number-minus')) {
+			val -= step;
+		} else {
+			val += step;
+		}
+		$input.val(val);
+		$input.change();
+		return false;
+	});
+
+	$('body').on('change', '.number-text', function(){
+		var $input = $(this);
+		var $row = $input.closest('.number');
+		var step = $row.data('step');
+		var min = parseInt($row.data('min'));
+		var max = parseInt($row.data('max'));
+		var val = parseFloat($input.val());
+		if (isNaN(val)) {
+			val = step;
+		} else if (min && val < min) {
+			val = min;
+		} else if (max && val > max) {
+			val = max;
+		}
+		$input.val(val);
+	});
+});
+  </script>
+
+  </div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/htmx/1.9.6/htmx.min.js" crossorigin="anonymous"></script>
+
+</body>
+
+</html>

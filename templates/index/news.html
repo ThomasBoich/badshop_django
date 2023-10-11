@@ -1,0 +1,19 @@
+{% extends 'default.html' %}
+{% block content %}
+<div class="content contacts">
+    <nav>
+      <div class="breadcrumbs">
+        <a href="{% url 'index' %}">Главная »</a>
+        <a href="{% url 'blog' %}">Блог »</a>
+        <a href="{% url 'blogPage' post.id %}">{{post.title}}</a>
+      </div>
+    </nav>
+    <h1>{{post.title}}</h1>
+
+    <div class="news-content">
+      <div class="news-date">{{post.publish_date}}</div>
+        {{post.text|safe}}
+    </div>
+
+  </div>
+{% endblock %}

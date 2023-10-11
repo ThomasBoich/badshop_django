@@ -1,0 +1,26 @@
+{% extends 'default.html' %}{% load static %}
+{% block content %}
+<div class="content partners">
+    <nav>
+      <div class="breadcrumbs">
+        <a href="{% url 'index' %}">Главная »</a>
+        <a href="{% url 'partners' %}">Партнерам</a>
+      </div>
+    </nav>
+    <h1>Партнерам</h1>
+    <p style="max-width:90%;">
+      Сотрудничаем с ведущими аптеками и поставщиками фармацевтической продукции.
+    </p>
+    {%for partner in partners%}
+    <div class="partner">
+      <img src="{{partner.image.url}}" alt="">
+      <div class="partner-info">
+      <span>
+        {{partner.name}}
+      </span>
+      <p>{{partner.site}}</p>
+    </div>
+    </div>    
+    {%endfor%}
+  </div>
+{% endblock %}

@@ -1,0 +1,11 @@
+{% extends 'default.html' %}
+{% block content %}
+    <form action="" method="post" class="user-form">
+        <h1>Регистрация</h1>
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">ТЕСТ РЕГИСТРАЦИЯ</button>
+        
+        Есть аккаунт?  <a href="{% url 'login' %}">ВОЙТИ</a>
+    </form>
+{% endblock %}

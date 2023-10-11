@@ -1,0 +1,18 @@
+{% extends 'default.html' %}
+{% block content %}
+<div class="content contacts">
+    <nav>
+      <div class="breadcrumbs">
+        <a href="{% url 'index' %}">Главная »</a>
+        <a href="{% url 'salePage' sale.id %}">{{sale.title}}</a>
+      </div>
+    </nav>
+    <h1>{{sale.title}}</h1>
+
+    <div class="news-content">
+      <div class="news-date">{{sale.publish_date}}</div>
+        {{sale.text|safe}}
+    </div>
+
+  </div>
+{% endblock %}

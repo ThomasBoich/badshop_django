@@ -1,0 +1,22 @@
+{% extends 'default.html' %}
+{% block content %}
+<div class="content catalog">
+    <nav>
+      <div class="breadcrumbs">
+        <a href="">Главная »</a>
+        <a href="">Бренды</a>
+      </div>
+    </nav>
+    <h1>Бренды</h1>
+    <div class="catalog-items">
+        {%for brend in brends%}
+        <a href="" class="brend-link">
+        <div class="catalog-item brends-cards">
+            <img src="{{brend.image.url}}" alt="">
+            <span>{{brend.name}}</span>
+        </div>
+        </a>
+        {%endfor%}
+    </div>
+  </div>
+{% endblock %}

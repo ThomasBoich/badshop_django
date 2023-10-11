@@ -1,0 +1,30 @@
+{% extends 'default.html' %}
+{% block content %}
+<div class="content sail" style="display:block;margin: 0 auto;">
+    <nav>
+      <div class="breadcrumbs">
+        <a href="{% url 'index' %}">Главная »</a>
+        <a href="{% url 'sail' %}">Акции</a>
+      </div>
+    </nav>
+    <h1>Акции</h1>
+    <p>Мы предлагаем вашему вниманию привлекательные акции и специальные предложения. Акции на покупку наших БАДов от официального интернет-магазина компании позволят выгодно приобрести нашу продукцию.Наши акции и спецпредложения помогут сделать достойный выбор и сберечь средства из Вашего бюджета при покупке добавок от производителя. Подробную информацию обо всех действующих предложениях, актуальных акциях и привлекательных условиях Вы можете найти на страницах данного раздела.
+    </p>
+
+    <div class="sails-layer">
+      {%for sale in sales%}
+          <a href="{% url 'salePage' sale.id %}" class="sail-link">
+          {% if sale.image %}
+             <img src="{{sale.image.url}}" alt="">
+          {% endif %}
+          </a>
+      {%endfor%}
+      {% comment %} <a href="sailpage.html" class="sail-link"><img src="static/img/sale1.png" alt=""></a>
+      <a href="sailpage.html" class="sail-link"><img src="static/img/sale2.png" alt=""></a>
+      <a href="sailpage.html" class="sail-link"><img src="static/img/sale3.png" alt=""></a>
+      <a href="sailpage.html" class="sail-link"><img src="static/img/sale4.png" alt=""></a> {% endcomment %}
+    </div>
+
+
+  </div>
+{% endblock %}

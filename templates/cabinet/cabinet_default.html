@@ -1,0 +1,50 @@
+{% include 'header.html' %}{% load static %}
+
+        <!-- Модальное окно -->
+<div id="addAddressModal" class="modalAddress">
+    <div class="modal-content">
+        <span class="close" id="closeModal">&times;</span>
+        <h2>Добавление нового адреса</h2>
+        <form id="addressForm" method="post">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <input type="submit" value="Сохранить">
+        </form>
+    </div>
+</div>
+
+
+    <div class="content cabinet">
+
+      <nav>
+        <div class="breadcrumbs">
+          <a href="">Главная »</a>
+          <a href="">Мой кабинет</a>
+        </div>
+      </nav>
+      <h1>{{ title }}</h1>
+
+      <div class="cabinet-layer">
+        <div class="cabinet-nav">
+            {% if request.user.if_authenticated %}
+                <a href="{% url 'my_data' %}" class="{% if request.path == 'my_data' %}{% endif %}">Мои данные</a>
+                <a href="{% url 'myadress' %}" class="{% if request.path == 'myadress' %}{% endif %}">Мои адреса</a>
+            {% endif %}
+          <a href="{% url 'cabinet' %}" class="{% if request.path == 'cabinet' %}active{% endif %}">Мой кабинет</a>
+          <a href="{% url 'favorite' %}" class="{% if request.path == 'favorite' %}{% endif %}">Избранное</a>
+{#          <a href="historyorder.html" class="{% if request.path == url('') %}{% endif %}">История заказов</a>#}
+{#          <a href="mybonus.html" class="{% if request.path == url('') %}{% endif %}">Мои бонусы</a>#}
+{#          <a href="subscribes.html" class="{% if request.path == url('') %}{% endif %}">Подписки</a>#}
+        </div>
+        <div class="cabinet-content">
+                    {% block content %}
+
+                    {% endblock %}
+        </div>
+      </div>
+
+    </div>
+
+
+
+{% include 'footer.html' %}
