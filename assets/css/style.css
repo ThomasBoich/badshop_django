@@ -542,6 +542,7 @@ img {
     font-weight: 700;
     font-size: 20px;
     text-transform: uppercase;
+    min-height: 60px;
 }
 
 .catalog-item img {
@@ -2482,7 +2483,7 @@ input[type=range]::-ms-thumb {
     }
 
     .catalog-item span {
-        font-size: 4.2vw;
+        font-size: 3.2vw;
     }
 
     .catalog-content {
