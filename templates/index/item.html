@@ -30,38 +30,40 @@
           <div class="clearboth"></div>
           <p>Будет начислино <span>25</span> бонусов</p>
 {#          <a href="#"> ДОБАВИТЬ В КОРЗИНУ</a>#}
-            <button onclick="addToFavorites({{ item.id }})">Добавить в избранное</button>
-            <button onclick="addToCart({{ item.id }})" class="button-add-to-cart">Добавить в корзину</button>
+            <button onclick="toggleFavorites({{ item.id }})">Добавить в избранное</button>
+            <button onclick="toggleCart({{ item.id }})" class="button-add-to-cart">Добавить в корзину</button>
       </div>
     </div>
 
 
 <script>
-// Добавление товара в избранное
-function addToFavorites(item_id) {
-  fetch(`/add_to_favorites/${item_id}`, {method: 'GET'})
+function toggleCart(item_id) {
+  fetch(`/toggle_cart/${item_id}`, { method: 'GET' })
     .then(response => response.json())
     .then(data => {
-      showNotification(data.message); // Показываем уведомление
-    });
-}
-
-// Добавление товара в корзину
-function addToCart(item_id) {
-  fetch(`/add_to_cart/${item_id}`, {method: 'GET'})
-    .then(response => response.json())
-    .then(data => {
-      showNotification(data.message); // Показываем уведомление
-    });
-}
-
-function removeFromCart(item_id) {
-  fetch(`/remove_from_cart/${item_id}`, {method: 'GET'})
-    .then(response => response.json())
-    .then(data => {
-      showNotification(data.message); // Показываем уведомление
+      showNotification(data.message);
+      // Проверяем, есть ли класс 'item-added-to-cart' и переключаем его
       const button = document.getElementById(`button-add-to-cart-${item_id}`);
-      button.classList.remove('item-added-to-cart'); // Удаляем класс
+      if (button.classList.contains('item-added-to-cart')) {
+        button.classList.remove('item-added-to-cart');
+      } else {
+        button.classList.add('item-added-to-cart');
+      }
+    });
+}
+
+function toggleFavorites(item_id) {
+  fetch(`/toggle_favorites/${item_id}`, { method: 'GET' })
+    .then(response => response.json())
+    .then(data => {
+      showNotification(data.message);
+      // Проверяем, есть ли класс 'item-favorited' и переключаем его
+      const button = document.getElementById(`button-add-to-favorites-${item_id}`);
+      if (button.classList.contains('item-favorited')) {
+        button.classList.remove('item-favorited');
+      } else {
+        button.classList.add('item-favorited');
+      }
     });
 }
 
@@ -92,12 +94,12 @@ function showNotification(message) {
             <p>{{item.compound|safe}}</p>
           </div>
         </div>
-        <div class="accordion-item">
-          <button id="accordion-button-3" aria-expanded="false"><span class="accordion-title">Отзывы</span><span class="icon" aria-hidden="true"></span></button>
-          <div class="accordion-content">
-            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Elementum sagittis vitae et leo duis ut. Ut tortor pretium viverra suspendisse potenti.</p>
-          </div>
-        </div>
+{#        <div class="accordion-item">#}
+{#          <button id="accordion-button-3" aria-expanded="false"><span class="accordion-title">Отзывы</span><span class="icon" aria-hidden="true"></span></button>#}
+{#          <div class="accordion-content">#}
+{#            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Elementum sagittis vitae et leo duis ut. Ut tortor pretium viverra suspendisse potenti.</p>#}
+{#          </div>#}
+{#        </div>#}
         <div class="accordion-item">
           <button id="accordion-button-4" aria-expanded="false"><span class="accordion-title">Информация о доставке</span><span class="icon" aria-hidden="true"></span></button>
           <div class="accordion-content">
@@ -107,7 +109,11 @@ function showNotification(message) {
         <div class="accordion-item">
           <button id="accordion-button-5" aria-expanded="false"><span class="accordion-title">Сертификат</span><span class="icon" aria-hidden="true"></span></button>
           <div class="accordion-content">
-            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Elementum sagittis vitae et leo duis ut. Ut tortor pretium viverra suspendisse potenti.</p>
+            <p>
+            {% for certificate in certificates %}
+                <img src="{{certificate.photo.url}}" alt="">
+            {% endfor %}
+            </p>
           </div>
         </div>
       </div>
@@ -120,8 +126,8 @@ function showNotification(message) {
       <label for="tab-btn-1">Описание</label>
       <input type="radio" name="tab-btn" id="tab-btn-2" value="">
       <label for="tab-btn-2">Состав</label>
-      <input type="radio" name="tab-btn" id="tab-btn-3" value="">
-      <label for="tab-btn-3">Отзывы</label>
+{#      <input type="radio" name="tab-btn" id="tab-btn-3" value="">#}
+{#      <label for="tab-btn-3">Отзывы</label>#}
       <input type="radio" name="tab-btn" id="tab-btn-4" value="">
       <label for="tab-btn-4">Информация о доставке</label>
       <input type="radio" name="tab-btn" id="tab-btn-5" value="">
@@ -132,9 +138,9 @@ function showNotification(message) {
       <div id="content-2">
             {{item.compound|safe}}
       </div>
-      <div id="content-3">
-        Содержимое 3...
-      </div>
+{#      <div id="content-3">#}
+{#        Содержимое 3...#}
+{#      </div>#}
       <div id="content-4">
         {{item.delivery|safe}}
       </div>

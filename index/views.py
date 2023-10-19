@@ -26,6 +26,88 @@ SLIDER2 = SliderTwo.objects.all()
 BRENDS = Brend.objects.all()
 POSTS = Post.objects.all()
 
+
+
+# СТРАНИЦА ИЗБРАННЫЕ
+def favorite(request):
+    items = []
+
+    if request.user.is_authenticated:
+        items = FavoriteItem.objects.filter(user=request.user)
+
+    elif 'favorites' in request.session:
+        item_ids = request.session['favorites']
+        items = Item.objects.filter(id__in=item_ids)
+
+    context = {
+        'title': 'Избранные',
+        'items': items,
+    }
+    return render(request, 'cabinet/favorite.html', context)
+
+
+# СТРАНИЦА КОРЗИНЫ
+def cart(request):
+    items = []
+
+    if request.user.is_authenticated:
+        items = CartItem.objects.filter(user=request.user)
+
+    elif 'cart' in request.session:
+        item_ids = request.session['cart']
+        items = Item.objects.filter(id__in=item_ids)
+
+    context = {
+        'items': items,
+        'title': 'Корзина',
+    }
+    return render(request, 'cart/cart.html', context)
+
+
+def toggle_cart(request, item_id):
+    item = get_object_or_404(Item, id=item_id)
+    if request.user.is_authenticated:
+        cart_item, created = CartItem.objects.get_or_create(user=request.user, item=item)
+        if created:
+            message = 'Товар добавлен в корзину'
+        else:
+            cart_item.delete()
+            message = 'Товар удален из корзины'
+    else:
+        cart = request.session.get('cart', {})
+        if item_id not in cart:
+            cart[item_id] = 1
+            message = 'Товар добавлен в корзину'
+        else:
+            del cart[item_id]
+            message = 'Товар удален из корзины'
+        request.session['cart'] = cart
+
+    return JsonResponse({'message': message})
+
+def toggle_favorites(request, item_id):
+    item = get_object_or_404(Item, id=item_id)
+    if request.user.is_authenticated:
+        favorite_item, created = FavoriteItem.objects.get_or_create(user=request.user, item=item)
+        if created:
+            message = 'Товар добавлен в избранное'
+        else:
+            favorite_item.delete()
+            message = 'Товар удален из избранного'
+    else:
+        favorites = request.session.get('favorites', [])
+        if item_id not in favorites:
+            favorites.append(item_id)
+            message = 'Товар добавлен в избранное'
+        else:
+            favorites.remove(item_id)
+            message = 'Товар удален из избранного'
+        request.session['favorites'] = favorites
+
+    return JsonResponse({'message': message})
+
+
+# ГЛАВНАЯ СТРАНИЦА
 def index(request):
     context = {
         'title': 'Главная страница',
@@ -39,6 +121,8 @@ def index(request):
     return render(request, 'index/index.html', context)
 
 
+
+# КАТАЛОГ
 def catalog(request):
     context = {
         'title': 'Каталог',
@@ -46,6 +130,8 @@ def catalog(request):
     }
     return render(request, 'index/catalog.html', context)
 
+
+# СТРАНИЦА КАТЕГОРИИ КАТАЛОГА
 def catalog_page(request, category_id):
     categories = Category.objects.all()
     minMaxPrice = Item.objects.aggregate(Min('seil_price'), Max('seil_price'))
@@ -61,6 +147,7 @@ def catalog_page(request, category_id):
         'title': f'{category.title}',
     }
     return render(request, 'index/catalogpage.html', context)
+
 
 
 # ФИЛЬТРАЦИЯ КАТАЛОГА
@@ -229,22 +316,6 @@ def cabinet(request):
         return redirect('login')
 
 
-def favorite(request):
-    if request.user.is_authenticated:
-        # Если пользователь авторизован, отображаем элементы корзины для этого пользователя
-        items = CartItem.objects.filter(user=request.user)
-    else:
-        # Если пользователь не авторизован, выводим товары из сессии
-        try:
-            items = CartItem.objects.filter(session=request.session.session_key)
-        except:
-            items = []
-    context = {
-        'title': 'Избранные',
-        'items': items,
-    }
-    return render(request, 'cabinet/favorite.html', context)
-
 
 # СТРАНИЦА МОИ АДРЕСА
 def myadress(request):
@@ -276,22 +347,6 @@ def delete_address(request, address_id):
     return redirect('myadress')  # Перенаправление на список адресов после удаления
 
 
-# СТРАНИЦА КОРЗИНЫ
-def cart(request):
-    if request.user.is_authenticated:
-        # Если пользователь авторизован, отображаем элементы корзины для этого пользователя
-        items = CartItem.objects.filter(user=request.user)
-    else:
-        # Если пользователь не авторизован, выводим товары из сессии
-        try:
-            items = CartItem.objects.filter(session=request.session.session_key)
-        except:
-            items = []
-    context = {
-        'items': items,
-        'title': 'Корзина',
-    }
-    return render(request, 'cart/cart.html', context)
 
 def edit_myaddress(request, address_id):
     # Получаем адрес по ID или возвращаем 404 ошибку, если адрес не существует
@@ -375,66 +430,3 @@ class CustomUserPasswordChangeView(PasswordChangeView):
 #     else:
 #         return JsonResponse({'status': 'already_exists'})
 
-def add_to_session_favorites(request, item_id):
-    item = get_object_or_404(Item, pk=item_id)
-    session_key = request.session.session_key
-    if not session_key:
-        request.session.save()
-        session_key = request.session.session_key
-    favorite, created = FavoriteItem.objects.get_or_create(session_id=session_key, item=item)
-    if created:
-        return JsonResponse({'status': 'added'})
-    else:
-        return JsonResponse({'status': 'already_exists'})
-
-@login_required
-def remove_from_favorites(request, item_id):
-    item = get_object_or_404(Item, pk=item_id)
-    FavoriteItem.objects.filter(user=request.user, item=item).delete()
-    return JsonResponse({'status': 'removed'})
-
-def remove_from_session_favorites(request, item_id):
-    item = get_object_or_404(Item, pk=item_id)
-    session_key = request.session.session_key
-    FavoriteItem.objects.filter(session_id=session_key, item=item).delete()
-    return JsonResponse({'status': 'removed'})
-
-@login_required
-def transfer_session_favorites(request):
-    session_key = request.session.session_key
-    if not session_key:
-        return redirect('cabinet')  # Вернуться на страницу адресов или другую целевую страницу
-    favorites = FavoriteItem.objects.filter(session_id=session_key)
-    for favorite in favorites:
-        FavoriteItem.objects.get_or_create(user=request.user, item=favorite.item)
-    return redirect('cabinet')  # Вернуться на страницу адресов или другую целевую страницу
-
-
-class AddToFavoriteView(View):
-    def get(self, request, item_id):
-        item = get_object_or_404(Item, id=item_id)
-        favorites = request.session.get('favorites', [])
-
-        if item_id not in favorites:
-            favorites.append(item_id)
-            request.session['favorites'] = favorites
-
-            if request.user.is_authenticated:
-                FavoriteItem.objects.create(user=request.user, item=item)
-
-        return JsonResponse({'message': 'Товар добавлен в избранное'})
-
-class AddToCartView(View):
-    def get(self, request, item_id):
-        item = get_object_or_404(Item, id=item_id)
-        cart = request.session.get('cart', {})
-
-        cart[item_id] = cart.get(item_id, 0) + 1
-        request.session['cart'] = cart
-
-        if request.user.is_authenticated:
-            cart_item, created = CartItem.objects.get_or_create(user=request.user, item=item)
-            cart_item.quantity = (cart_item.quantity if not created else 0) + 1
-            cart_item.save()
-
-        return JsonResponse({'message': 'Товар добавлен в корзину'})

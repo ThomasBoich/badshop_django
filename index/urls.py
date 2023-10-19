@@ -1,9 +1,9 @@
 from django.urls import path
 
 from blog.views import blog, blogPage
-from index.views import index, catalog, filter, catalog_page, item, brends, pay, sail, salePage, about, partners, contacts, cabinet, cart, my_data, myadress, \
-    delete_address, edit_myaddress, transfer_session_favorites, remove_from_session_favorites, remove_from_favorites, \
-    add_to_session_favorites, favorite, CustomUserPasswordChangeView, AddToFavoriteView, AddToCartView
+from index.views import index, catalog, filter, catalog_page, item, brends, pay, sail, salePage, about, partners, \
+    contacts, cabinet, cart, my_data, myadress, \
+    delete_address, edit_myaddress, favorite, CustomUserPasswordChangeView, toggle_favorites, toggle_cart
 from users.views import AppLoginView, AppLogoutView, AppRegistration
 
 urlpatterns = [
@@ -50,14 +50,7 @@ urlpatterns = [
     path('cart/', cart, name="cart"),
 
     # РАБОТА С КАРЗИНОЙ И ИЗБРАННЫМИ
-    #path('add_to_favorites/<int:item_id>/', add_to_favorites, name='add_to_favorites'),
-    path('add_to_session_favorites/<int:item_id>/', add_to_session_favorites, name='add_to_session_favorites'),
-    path('remove_from_favorites/<int:item_id>/', remove_from_favorites, name='remove_from_favorites'),
-    path('remove_from_session_favorites/<int:item_id>/', remove_from_session_favorites, name='remove_from_session_favorites'),
-    path('transfer_session_favorites/', transfer_session_favorites, name='transfer_session_favorites'),
 
-    path('add_to_favorites/<int:item_id>/', AddToFavoriteView.as_view(), name='add_to_favorites'),
-    path('add_to_cart/<int:item_id>/', AddToCartView.as_view(), name='add_to_cart'),
-
-
+    path('toggle_cart/<int:item_id>/', toggle_cart, name='toggle_cart'),
+    path('toggle_favorites/<int:item_id>/', toggle_favorites, name='toggle_favorites'),
 ]

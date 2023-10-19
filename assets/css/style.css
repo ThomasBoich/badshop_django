@@ -341,6 +341,10 @@ img {
     margin: 0px 0px 12px 0px;
     font-size: 20px;
     font-weight: 500;
+    height: 3.5em; /* Высота блока в 3 строки */
+    overflow: hidden; /* Скрытие текста, превышающего высоту блока */
+    text-overflow: ellipsis; /* Добавление многоточия для обрезанного текста */
+    /* white-space: nowrap; Запрет переноса текста на новую строку */
 }
 
 .item-img {
@@ -364,6 +368,7 @@ img {
     margin: 0 auto;
     width: 90%;
     text-align: center;
+    word-wrap: break-word;
 }
 
 .like-button {
@@ -1565,7 +1570,7 @@ form.subscribes-form button:hover {
     background-color: #F0F0F0;
     padding: 2vw 2vw 2vw 2vw;
     border-radius: 25px;
-    height: 25vw;
+    height: auto;
     box-sizing: border-box;
     display: flex;
     justify-content: center;

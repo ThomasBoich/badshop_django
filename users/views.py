@@ -18,7 +18,7 @@ class AppLoginView(LoginView):
     template_name = 'login.html'
     success_url = reverse_lazy('index')
     def get_success_url(self):
-        return reverse_lazy('transfer_session_favorites')
+        return reverse_lazy('index')
 
     redirect_authenticated_user = True
 

@@ -49,13 +49,7 @@
             <div class="item-content">
               <div class="item-img">
                 <div class="sale-button">{{ item.discount }} %</div>
-                <div class="like-button" id="addSessionFavoriteButton" data-item-id="{{ item.id }}"
-
-                     hx-get="{% url 'add_to_favorites' item.id %}"
-                     hx-target="#addSessionFavoriteButton"
-                     hx-swap="outerHTML"
-
-                >
+                <div class="like-button" id="addSessionFavoriteButton" data-item-id="{{ item.id }}">
                   <img src="{% static '/img/like.svg' %}" class="like-img" class="like-img" alt="">
                 </div>
                 <a href="{% url 'item' item.id %}">
