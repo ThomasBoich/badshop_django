@@ -43,7 +43,7 @@
 
 
             </button>
-            <button onclick="toggleFavorites({{ item.id }})" class="add-favorite-item">
+            <button onclick="toggleFavorites({{ item.id }})" class="add-favorite-item" id="add-favorite-item">
                 {% if item.id in favorite_items %}
                     В избранном
                 	{% else %}
