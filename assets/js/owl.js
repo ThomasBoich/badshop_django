@@ -3,8 +3,8 @@ $('.owl-carousel').owlCarousel({
   margin: 10,
   nav: true,
   navText: [
-    "<img src='./static/img/VectorLeft.svg'>",
-    "<img src='./static/img/VectorRight.svg' />"
+    "<img src='/static/img/VectorLeft.svg'>",
+    "<img src='/static/img/VectorRight.svg' />"
   ],
   autoplay: false,
   autoplayHoverPause: false,
