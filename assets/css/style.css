@@ -2071,6 +2071,16 @@ input[type=range]::-ms-thumb {
     box-shadow: rgba(14, 34, 49, 0.22) inset 0px 2px 0px 0px;
 }
 
+.like-button svg{
+    fill: #000000;
+    stroke: #000000;
+}
+
+.item-favorited svg{
+    fill:#00B44E;
+    stroke: #00B44E;
+}
+
 @media (max-width: 1460px) {
     .navigation a {
         font-size: 16px;

@@ -97,22 +97,52 @@ function toggleCart(item_id) {
     });
 }
 
+
+// Модифицируйте функцию toggleCart для обновления количества товаров в корзине в реальном времени
 function toggleFavorites(item_id) {
+  // Найти все элементы с заданным item_id
+  const buttons = document.querySelectorAll(`[id^="button-add-to-favorites-${item_id}"]`);
+
   fetch(`/toggle_favorites/${item_id}`, { method: 'GET' })
     .then(response => response.json())
     .then(data => {
       showNotification(data.message);
-      // Проверяем, есть ли класс 'item-favorited' и переключаем его
-      const button = document.getElementById(`button-add-to-favorites-${item_id}`);
-      if (button.classList.contains('item-favorited')) {
+
+      buttons.forEach(button => {
+        if (button.classList.contains('item-favorited')) {
         button.classList.remove('item-favorited');
-        updatefavoriteCount();
-      } else {
+            updatefavoriteCount();
+            const addFavoriteButton = document.querySelectorAll('.add-favorite-item');
+            addFavoriteButton.textContent = 'Добавить в избранное';
+
+        } else {
         button.classList.add('item-favorited');
-        updatefavoriteCount();
-      }
+                    updatefavoriteCount();
+            const addFavoriteButton = document.querySelectorAll('.add-favorite-item');
+            addFavoriteButton.textContent = 'В избранном';
+
+
+        }
+      });
     });
 }
+
+//function toggleFavorites(item_id) {
+//  fetch(`/toggle_favorites/${item_id}`, { method: 'GET' })
+//    .then(response => response.json())
+//    .then(data => {
+//      showNotification(data.message);
+      // Проверяем, есть ли класс 'item-favorited' и переключаем его
+//      const button = document.getElementById(`button-add-to-favorites-${item_id}`);
+ //     if (button.classList.contains('item-favorited')) {
+   //     button.classList.remove('item-favorited');
+     //   updatefavoriteCount();
+      //} else {
+       // button.classList.add('item-favorited');
+        //updatefavoriteCount();
+      //}
+    //});
+//}
 
 // Показать всплывающее сообщение
 function showNotification(message) {
