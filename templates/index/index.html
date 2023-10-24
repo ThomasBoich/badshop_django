@@ -174,7 +174,7 @@
               {{item.rating}}
             </div>
           </div>
-          <a href="" class="item-buy">КУПИТЬ</a>
+{#          <a href="" class="item-buy">КУПИТЬ</a>#}
         <button class="item-buy {% if item.id in cart_items %}item-added-to-cart{% endif %}" id="button-add-to-cart-{{ item.id }}" onclick="toggleCart({{ item.id }})">{% if item.id in cart_items %}В корзине{% else %}КУПИТЬ{% endif %}</button>
         </div>
       </div>
