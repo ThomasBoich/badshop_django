@@ -3,7 +3,8 @@ from django.urls import path
 from blog.views import blog, blogPage
 from index.views import index, catalog, filter, catalog_page, item, brends, pay, sail, salePage, about, partners, \
     contacts, cabinet, cart, my_data, myadress, \
-    delete_address, edit_myaddress, favorite, CustomUserPasswordChangeView, toggle_favorites, toggle_cart
+    delete_address, edit_myaddress, favorite, CustomUserPasswordChangeView, toggle_favorites, toggle_cart, \
+    get_cart_count, get_favorite_count
 from users.views import AppLoginView, AppLogoutView, AppRegistration
 
 urlpatterns = [
@@ -50,7 +51,8 @@ urlpatterns = [
     path('cart/', cart, name="cart"),
 
     # РАБОТА С КАРЗИНОЙ И ИЗБРАННЫМИ
-
+    path('get_cart_count/', get_cart_count, name="get_cart_count"),
+    path('get_favorite_count/', get_favorite_count, name="get_favorite_count"),
     path('toggle_cart/<int:item_id>/', toggle_cart, name='toggle_cart'),
     path('toggle_favorites/<int:item_id>/', toggle_favorites, name='toggle_favorites'),
 ]

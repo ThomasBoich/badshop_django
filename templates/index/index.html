@@ -49,7 +49,7 @@
             <div class="item-content">
               <div class="item-img">
                 <div class="sale-button">{{ item.discount }} %</div>
-                <div class="like-button" id="addSessionFavoriteButton" data-item-id="{{ item.id }}">
+                <div class="like-button" id="addSessionFavoriteButton" data-item-id="{{ item.id }}" onclick="toggleFavorites({{ item.id }})">
                   <img src="{% static '/img/like.svg' %}" class="like-img" class="like-img" alt="">
                 </div>
                 <a href="{% url 'item' item.id %}">
@@ -73,7 +73,9 @@
                   {{item.rating}}
                 </div>
               </div>
-              <a href="" class="item-buy">КУПИТЬ</a>
+{#              <a href="" class="item-buy">КУПИТЬ</a>#}
+            <button class="item-buy {% if item.id in cart_items%}item-added-to-cart{% endif %}" onclick="toggleCart({{ item.id }})" id="button-add-to-cart-{{ item.id }}">{% if item.id in cart_items %}В корзине{% else %}КУПИТЬ{% endif %}</button>
+
             </div>
           </div>
           {% endfor %}
@@ -148,7 +150,7 @@
         <div class="item-content">
           <div class="item-img">
             <div class="sale-button">{{item.discount}}%</div>
-            <div class="like-button" id="addFavoriteButton" data-item-id="{{ item.id }}">
+            <div class="like-button" id="addFavoriteButton" data-item-id="{{ item.id }}" onclick="toggleFavorites({{ item.id }})">
               <img src="static/img/like.svg" class="like-img" alt="">
             </div>
             <a href="{% url 'item' item.id %}">
@@ -173,6 +175,7 @@
             </div>
           </div>
           <a href="" class="item-buy">КУПИТЬ</a>
+        <button class="item-buy {% if item.id in cart_items %}item-added-to-cart{% endif %}" id="button-add-to-cart-{{ item.id }}" onclick="toggleCart({{ item.id }})">{% if item.id in cart_items %}В корзине{% else %}КУПИТЬ{% endif %}</button>
         </div>
       </div>
     {% endfor %}

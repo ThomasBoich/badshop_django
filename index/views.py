@@ -33,6 +33,18 @@ def favorite(request):
     items = []
 
     if request.user.is_authenticated:
+        # Если пользователь авторизован, получаем товары из базы данных
+        cart_item_ids = CartItem.objects.filter(user=request.user).values_list('item_id', flat=True)
+        cart_items = list(cart_item_ids)
+        favorite_items_ids = FavoriteItem.objects.filter(user=request.user).values_list('item_id', flat=True)
+        favorite_items = list(favorite_items_ids)
+    else:
+        # Если пользователь не авторизован, получаем товары из сессии
+        cart_items = request.session.get('cart', [])
+        favorite_items = request.session.get('favorites', [])
+
+
+    if request.user.is_authenticated:
         items = FavoriteItem.objects.filter(user=request.user)
 
     elif 'favorites' in request.session:
@@ -42,9 +54,37 @@ def favorite(request):
     context = {
         'title': 'Избранные',
         'items': items,
+        'cart_items': cart_items,
+        'favorite_items': favorite_items,
     }
     return render(request, 'cabinet/favorite.html', context)
 
+def get_cart_count(request):
+    if request.user.is_authenticated:
+        cart_count = CartItem.objects.filter(user=request.user).count()
+        return JsonResponse({'count': cart_count})
+    else:
+        session_cart = request.session.get('cart', [])
+        print(f"session_cart: {session_cart}")  # добавить отладочный вывод
+        if isinstance(session_cart, list):  # проверка, что session_cart - это список
+            cart_count = len(session_cart)  # считает количество элементов в списке
+        else:
+            cart_count = 0
+        return JsonResponse({'count': cart_count})
+
+def get_favorite_count(request):
+    if request.user.is_authenticated:
+        favorites_count = FavoriteItem.objects.filter(user=request.user).count()
+        return JsonResponse({'count': favorites_count})
+    else:
+        session_favorites = request.session.get('favorites', [])
+        print(f"session_favorites: {session_favorites}")  # добавить отладочный вывод
+        if isinstance(session_favorites, list):  # проверка, что session_cart - это список
+            favorites_count = len(session_favorites)  # считает количество элементов в списке
+            print(favorites_count)
+        else:
+            favorites_count = 0
+        return JsonResponse({'count': favorites_count})
 
 # СТРАНИЦА КОРЗИНЫ
 def cart(request):
@@ -64,6 +104,27 @@ def cart(request):
     return render(request, 'cart/cart.html', context)
 
 
+# def toggle_cart(request, item_id):
+#     item = get_object_or_404(Item, id=item_id)
+#     if request.user.is_authenticated:
+#         cart_item, created = CartItem.objects.get_or_create(user=request.user, item=item)
+#         if created:
+#             message = 'Товар добавлен в корзину'
+#         else:
+#             cart_item.delete()
+#             message = 'Товар удален из корзины'
+#     else:
+#         cart = request.session.get('cart', [])
+#
+#         if item_id not in cart:
+#             cart.append(item_id)
+#             message = 'Товар добавлен в корзину'
+#         else:
+#             cart.remove(item_id)
+#             message = 'Товар удален из корзины'
+#
+#     return JsonResponse({'message': message})
+
 def toggle_cart(request, item_id):
     item = get_object_or_404(Item, id=item_id)
     if request.user.is_authenticated:
@@ -74,17 +135,16 @@ def toggle_cart(request, item_id):
             cart_item.delete()
             message = 'Товар удален из корзины'
     else:
-        cart = request.session.get('cart', {})
+        cart = request.session.get('cart', [])
         if item_id not in cart:
-            cart[item_id] = 1
+            cart.append(item_id)
             message = 'Товар добавлен в корзину'
         else:
-            del cart[item_id]
+            cart.remove(item_id)
             message = 'Товар удален из корзины'
         request.session['cart'] = cart
 
     return JsonResponse({'message': message})
-
 def toggle_favorites(request, item_id):
     item = get_object_or_404(Item, id=item_id)
     if request.user.is_authenticated:
@@ -109,6 +169,18 @@ def toggle_favorites(request, item_id):
 
 # ГЛАВНАЯ СТРАНИЦА
 def index(request):
+
+    if request.user.is_authenticated:
+        # Если пользователь авторизован, получаем товары из базы данных
+        cart_item_ids = CartItem.objects.filter(user=request.user).values_list('item_id', flat=True)
+        cart_items = list(cart_item_ids)
+        favorite_items_ids = FavoriteItem.objects.filter(user=request.user).values_list('item_id', flat=True)
+        favorite_items = list(favorite_items_ids)
+    else:
+        # Если пользователь не авторизован, получаем товары из сессии
+        cart_items = request.session.get('cart', [])
+        favorite_items = request.session.get('favorites', [])
+
     context = {
         'title': 'Главная страница',
         'items_sails': ITEMS.filter(discount__gt=0),
@@ -117,6 +189,8 @@ def index(request):
         'slider2': SliderTwo.objects.all(),
         'popular_items': Item.objects.all().order_by('-rating'),
         'brends': Brend.objects.all(),
+        'cart_items': cart_items,
+        'favorite_items': favorite_items,
     }
     return render(request, 'index/index.html', context)
 
@@ -137,6 +211,16 @@ def catalog_page(request, category_id):
     minMaxPrice = Item.objects.aggregate(Min('seil_price'), Max('seil_price'))
     minPrice = Item.objects.aggregate(Min('seil_price'))['seil_price__min']
     category = categories.get(id=category_id)
+    if request.user.is_authenticated:
+        # Если пользователь авторизован, получаем товары из базы данных
+        cart_item_ids = CartItem.objects.filter(user=request.user).values_list('item_id', flat=True)
+        cart_items = list(cart_item_ids)
+        favorite_items_ids = FavoriteItem.objects.filter(user=request.user).values_list('item_id', flat=True)
+        favorite_items = list(favorite_items_ids)
+    else:
+        # Если пользователь не авторизован, получаем товары из сессии
+        cart_items = request.session.get('cart', [])
+        favorite_items = request.session.get('favorites', [])
     context = {
         'category': category,
         'items': Item.objects.filter(category_id=category_id),
@@ -145,6 +229,8 @@ def catalog_page(request, category_id):
         'minMaxPrice': minMaxPrice,
         'minPrice': minPrice,
         'title': f'{category.title}',
+        'cart_items': cart_items,
+        'favorite_items': favorite_items,
     }
     return render(request, 'index/catalogpage.html', context)
 
@@ -155,6 +241,17 @@ def filter(request, category_id=None, items_id=None):
     items = Item.objects.all()
     brends = Brend.objects.all()
     minMaxPrice = Item.objects.aggregate(Min('seil_price'), Max('seil_price'))
+
+    if request.user.is_authenticated:
+        # Если пользователь авторизован, получаем товары из базы данных
+        cart_item_ids = CartItem.objects.filter(user=request.user).values_list('item_id', flat=True)
+        cart_items = list(cart_item_ids)
+        favorite_items_ids = FavoriteItem.objects.filter(user=request.user).values_list('item_id', flat=True)
+        favorite_items = list(favorite_items_ids)
+    else:
+        # Если пользователь не авторизован, получаем товары из сессии
+        cart_items = request.session.get('cart', [])
+        favorite_items = request.session.get('favorites', [])
 
     if category_id:
         category = Category.objects.get(id=category_id)
@@ -179,6 +276,8 @@ def filter(request, category_id=None, items_id=None):
             'items': items,
             'brends': brends,
             'minMaxPrice': minMaxPrice,
+            'cart_items': cart_items,
+            'favorite_items': favorite_items,
         }
 
         return render(request, 'index/catalogpage_filter.html', context)
@@ -206,6 +305,8 @@ def filter(request, category_id=None, items_id=None):
             'items': items,
             'brends': brends,
             'minMaxPrice': minMaxPrice,
+            'cart_items': cart_items,
+            'favorite_items': favorite_items,
         }
 
         return render(request, 'index/catalogpage_filter.html', context)
@@ -235,6 +336,8 @@ def filter(request, category_id=None, items_id=None):
             'brends': brends,
             'minMaxPrice': minMaxPrice,
             'search_query': search_query,
+            'cart_items': cart_items,
+            'favorite_items': favorite_items,
         }
 
         return render(request, 'index/catalogpage_filter_search.html', context)
@@ -242,6 +345,17 @@ def filter(request, category_id=None, items_id=None):
 
 # СТРАНИЦА ТОВАРА
 def item(request, item_id):
+    if request.user.is_authenticated:
+        # Если пользователь авторизован, получаем товары из базы данных
+        cart_item_ids = CartItem.objects.filter(user=request.user).values_list('item_id', flat=True)
+        cart_items = list(cart_item_ids)
+        favorite_items_ids = FavoriteItem.objects.filter(user=request.user).values_list('item_id', flat=True)
+        favorite_items = list(favorite_items_ids)
+    else:
+        # Если пользователь не авторизован, получаем товары из сессии
+        cart_items = request.session.get('cart', [])
+        favorite_items = request.session.get('favorites', [])
+
     items = Item.objects.all()
     item = items.get(id=item_id)
     context = {
@@ -249,6 +363,8 @@ def item(request, item_id):
         'items': items,
         'certificates': CertificateImages.objects.filter(item=item),
         'title': f'{item.name}',
+        'cart_items': cart_items,
+        'favorite_items': favorite_items,
     }
     return render(request, 'index/item.html', context)
 

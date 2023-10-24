@@ -30,56 +30,25 @@
           <div class="clearboth"></div>
           <p>Будет начислино <span>25</span> бонусов</p>
 {#          <a href="#"> ДОБАВИТЬ В КОРЗИНУ</a>#}
-            <button onclick="toggleFavorites({{ item.id }})">Добавить в избранное</button>
-            <button onclick="toggleCart({{ item.id }})" class="button-add-to-cart">Добавить в корзину</button>
+            <button onclick="toggleCart({{ item.id }})" class="button-add-to-cart {% if item.id in cart_items%}item-added-to-cart{% endif %}" id="button-add-to-cart-{{ item.id }}">
+
+
+                {% if item.id in cart_items %}
+                    В корзине
+                	{% else %}
+                    Добавить в корзину
+                {% endif %}
+
+
+
+
+            </button>
+            <button onclick="toggleFavorites({{ item.id }})" class="add-favorite-item">Добавить в избранное</button>
       </div>
     </div>
 
 
-<script>
-function toggleCart(item_id) {
-  fetch(`/toggle_cart/${item_id}`, { method: 'GET' })
-    .then(response => response.json())
-    .then(data => {
-      showNotification(data.message);
-      // Проверяем, есть ли класс 'item-added-to-cart' и переключаем его
-      const button = document.getElementById(`button-add-to-cart-${item_id}`);
-      if (button.classList.contains('item-added-to-cart')) {
-        button.classList.remove('item-added-to-cart');
-      } else {
-        button.classList.add('item-added-to-cart');
-      }
-    });
-}
 
-function toggleFavorites(item_id) {
-  fetch(`/toggle_favorites/${item_id}`, { method: 'GET' })
-    .then(response => response.json())
-    .then(data => {
-      showNotification(data.message);
-      // Проверяем, есть ли класс 'item-favorited' и переключаем его
-      const button = document.getElementById(`button-add-to-favorites-${item_id}`);
-      if (button.classList.contains('item-favorited')) {
-        button.classList.remove('item-favorited');
-      } else {
-        button.classList.add('item-favorited');
-      }
-    });
-}
-
-// Показать всплывающее сообщение
-function showNotification(message) {
-  const notification = document.createElement('div');
-  notification.classList.add('notification');
-  notification.textContent = message;
-  document.body.appendChild(notification);
-
-  // Удалить уведомление через некоторое время
-  setTimeout(() => {
-    notification.remove();
-  }, 3000);
-}
-</script>
     <!-- <div class="container"></div> -->
       <div class="accordion">
         <div class="accordion-item">
@@ -161,7 +130,7 @@ function showNotification(message) {
             <div class="item-content">
               <div class="item-img">
                 <div class="sale-button">-{{item.discount}}%</div>
-                <div class="like-button">
+                <div class="like-button" onclick="toggleFavorites({{ item.id }})">
                   <img src="{% static 'img/like.svg' %}" class="like-img" class="like-img" alt="">
                 </div>
                 <a href="{% url 'item' item.id %}">
@@ -185,7 +154,15 @@ function showNotification(message) {
                   {{item.rating}}
                 </div>
               </div>
-              <a href="" class="item-buy">КУПИТЬ</a>
+{#              <a href="" class="item-buy">КУПИТЬ</a>#}
+            <button onclick="toggleCart({{ item.id }})" class="item-buy {% if item.id in cart_items%}item-added-to-cart{% endif %}" id="button-add-to-cart-{{ item.id }}">
+                  {% if item.id in cart_items %}
+                               В корзине
+
+                	{% else %}
+                КУПИТЬ
+            {% endif %}
+            </button>
             </div>
           </div>
 

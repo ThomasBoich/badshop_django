@@ -47,6 +47,87 @@
       </div>
     </div>
   </footer>
+<script>
+
+// Определите функцию для обновления количества товаров в корзине
+const cartCountElement = document.getElementById('cart-count');
+function updateCartCount() {
+  fetch('/get_cart_count', { method: 'GET' })
+    .then(response => response.json())
+    .then(data => {
+      cartCountElement.textContent = data.count;
+    });
+}
+
+// Определите функцию для обновления количества товаров в корзине
+const favoriteCountElement = document.getElementById('like-count');
+function updatefavoriteCount() {
+  fetch('/get_favorite_count', { method: 'GET' })
+    .then(response => response.json())
+    .then(data => {
+      favoriteCountElement.textContent = data.count;
+    });
+}
+
+// Вызовите функцию для обновления количества товаров в корзине при загрузке страницы
+updateCartCount();
+updatefavoriteCount();
+
+// Модифицируйте функцию toggleCart для обновления количества товаров в корзине в реальном времени
+function toggleCart(item_id) {
+  // Найти все элементы с заданным item_id
+  const buttons = document.querySelectorAll(`[id^="button-add-to-cart-${item_id}"]`);
+
+  fetch(`/toggle_cart/${item_id}`, { method: 'GET' })
+    .then(response => response.json())
+    .then(data => {
+      showNotification(data.message);
+
+      buttons.forEach(button => {
+        if (button.classList.contains('item-added-to-cart')) {
+          button.classList.remove('item-added-to-cart');
+          button.textContent = 'КУПИТЬ';
+          updateCartCount();
+        } else {
+          button.classList.add('item-added-to-cart');
+          button.textContent = 'В корзине';
+          updateCartCount(); // Увеличить количество товаров в корзине и обновить счетчик
+        }
+      });
+    });
+}
+
+function toggleFavorites(item_id) {
+  fetch(`/toggle_favorites/${item_id}`, { method: 'GET' })
+    .then(response => response.json())
+    .then(data => {
+      showNotification(data.message);
+      // Проверяем, есть ли класс 'item-favorited' и переключаем его
+      const button = document.getElementById(`button-add-to-favorites-${item_id}`);
+      if (button.classList.contains('item-favorited')) {
+        button.classList.remove('item-favorited');
+        updatefavoriteCount();
+      } else {
+        button.classList.add('item-favorited');
+        updatefavoriteCount();
+      }
+    });
+}
+
+// Показать всплывающее сообщение
+function showNotification(message) {
+  const notification = document.createElement('div');
+  notification.classList.add('notification');
+  notification.textContent = message;
+  document.body.appendChild(notification);
+
+  // Удалить уведомление через некоторое время
+  setTimeout(() => {
+    notification.remove();
+  }, 3000);
+}
+</script>
+
 
   <script src="https://code.jquery.com/jquery-3.7.0.min.js"
     integrity="sha256-2Pmvv0kuTBOenSvLm6bvfBSSHrUJ+3A7x6P5Ebd07/g=" crossorigin="anonymous"></script>
