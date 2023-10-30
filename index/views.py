@@ -2,6 +2,8 @@ from django.contrib import messages
 from django.shortcuts import render, redirect, get_object_or_404
 from django.views import View
 from django.db.models import Q, Min, Max, F, Sum
+
+from balance.models import BonusWallet
 from users.forms import UserUpdateForm, AddressForm, AddressEditForm, CustomUserSetPasswordForm
 from items.models import *
 from users.models import Address
@@ -94,6 +96,8 @@ def cart(request):
     total_discount = 0
     total_without_discount = 0
     total = 0
+    bonus_wallet = 0
+
 
     def calculate_cart_total(cart_items):
         total = 0
@@ -105,6 +109,9 @@ def cart(request):
         cart_items = CartItem.objects.filter(user=request.user)
         total_quantity = sum([item.quantity for item in cart_items])
         total = calculate_cart_total(cart_items)
+
+        # Получаем объект BonusWallet, связанный с текущим пользователем (предполагая, что пользователь аутентифицирован)
+        bonus_wallet = BonusWallet.objects.get(user=request.user).balance
 
         total_discount = 0
         for item in cart_items:
@@ -143,6 +150,7 @@ def cart(request):
         'total_without_discount': total_without_discount,
         'total_with_discount': total_without_discount - total_discount,
         'total': total,
+        'balance': bonus_wallet,
     }
 
     return render(request, 'cart/cart.html', context)
