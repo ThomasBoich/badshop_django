@@ -1,7 +1,7 @@
 from django.contrib import messages
 from django.shortcuts import render, redirect, get_object_or_404
 from django.views import View
-from django.db.models import Q, Min, Max, F
+from django.db.models import Q, Min, Max, F, Sum
 from users.forms import UserUpdateForm, AddressForm, AddressEditForm, CustomUserSetPasswordForm
 from items.models import *
 from users.models import Address
@@ -90,6 +90,12 @@ def get_favorite_count(request):
 def cart(request):
     items = []
 
+    def calculate_cart_total(cart_items):
+        total = 0
+        for item in cart_items:
+            total += item.quantity * item.item.seil_price  # Используйте цену товара со скидкой (seil_price)
+        return total
+
     if request.user.is_authenticated:
         items = CartItem.objects.filter(user=request.user)
 
@@ -97,9 +103,24 @@ def cart(request):
         item_ids = request.session['cart']
         items = Item.objects.filter(id__in=item_ids)
 
+    total = calculate_cart_total(items)  # Вычислить общую сумму товаров в корзине
+
+    # Вычислить общее количество товаров в корзине
+    total_quantity = items.aggregate(total_quantity=Sum('quantity'))['total_quantity'] or 0
+
+    # Вычислить общую сумму скидки на все товары
+    total_discount = items.aggregate(total_discount=Sum(F('item__price') - F('item__seil_price') * F('quantity')))['total_discount'] or 0
+
+    # Вычислить общую сумму товаров без скидки
+    total_without_discount = items.aggregate(total_without_discount=Sum(F('item__price') * F('quantity')))['total_without_discount'] or 0
+
     context = {
         'items': items,
         'title': 'Корзина',
+        'total': total,  # Добавьте общую сумму в контекст
+        'total_quantity': total_quantity,
+        'total_discount': total_discount,
+        'total_without_discount': total_without_discount,
     }
     return render(request, 'cart/cart.html', context)
 

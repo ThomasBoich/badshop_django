@@ -215,15 +215,15 @@
               <div class="cart-price">
                 <div class="count">
                   <span>
-                    2 товара на сумму
+                    {{ total_quantity }} шт.  на сумму
                   </span>
-                  <span>1700 ₽</span>
+                  <span>{{ total_without_discount }} ₽</span>
                 </div>
                 <div class="sail">
-                  Скидка <span>300 ₽</span>
+                  Скидка <span>{{ total_discount }} ₽</span>
                 </div>
                 <div class="summa">
-                  Итого <span>1400 ₽</span>
+                  Итого <span>{{ total }} ₽</span>
                 </div>
               </div>
               <button type="submit">ОФОРМИТЬ ЗАКАЗ</button>

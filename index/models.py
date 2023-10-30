@@ -19,7 +19,7 @@ class Sale(models.Model):
         
 
 class SliderTop(models.Model):
-    image = models.ImageField(upload_to="baners/%Y/%m/%d/")
+    image = models.ImageField(upload_to="sliders/%Y/%m/%d/")
     title = models.CharField(max_length=255)
     text = models.CharField(max_length=255)
     slug = models.SlugField(blank=True, null=True)
@@ -33,7 +33,7 @@ class SliderTop(models.Model):
 
 
 class SliderTwo(models.Model):
-    image = models.ImageField(upload_to="baners/%Y/%m/%d/")
+    image = models.ImageField(upload_to="sliders/%Y/%m/%d/")
     title = models.CharField(max_length=255)
     text = models.CharField(max_length=255)
     slug = models.SlugField(blank=True, null=True)
