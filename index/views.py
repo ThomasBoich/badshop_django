@@ -91,6 +91,9 @@ def get_favorite_count(request):
 def cart(request):
     cart_items = []  # Используйте cart_items вместо items
     total_quantity = 0  # Инициализируем общее количество товаров нулем
+    total_discount = 0
+    total_without_discount = 0
+    total = 0
 
     def calculate_cart_total(cart_items):
         total = 0
@@ -117,8 +120,13 @@ def cart(request):
         cart_items = Item.objects.filter(id__in=item_ids)
 
         total_quantity = sum([1 for _ in cart_items])
-        total_discount = 0
+        if cart_items:
+            total_discount = 0
+        else:
+            total_discount = 0
+
         total_without_discount = 0
+
 
         for cart_item in cart_items:
             print(cart_item)
