@@ -32,6 +32,13 @@ class Item(models.Model):
     # @property
     # def seil_price(self):
     #     return self.price - (self.price * self.discount / 100)
+    # def save(self, *args, **kwargs):
+    #     if self.price is not None and self.discount is not None:
+    #         self.seil_price = self.price - (self.price * self.discount / 100)
+    #     else:
+    #         self.seil_price = None
+    #     super(Item, self).save(*args, **kwargs)
+
     def save(self, *args, **kwargs):
         if self.price is not None and self.discount is not None:
             self.seil_price = self.price - (self.price * self.discount / 100)
