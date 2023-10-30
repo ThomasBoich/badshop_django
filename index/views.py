@@ -87,43 +87,128 @@ def get_favorite_count(request):
         return JsonResponse({'count': favorites_count})
 
 # СТРАНИЦА КОРЗИНЫ
+
 def cart(request):
-    items = []
+    cart_items = []  # Используйте cart_items вместо items
+    total_quantity = 0  # Инициализируем общее количество товаров нулем
 
     def calculate_cart_total(cart_items):
         total = 0
         for item in cart_items:
-            total += item.quantity * item.item.seil_price  # Используйте цену товара со скидкой (seil_price)
+            total += item.quantity * item.item.seil_price
         return total
 
     if request.user.is_authenticated:
-        items = CartItem.objects.filter(user=request.user)
+        cart_items = CartItem.objects.filter(user=request.user)
+        total_quantity = sum([item.quantity for item in cart_items])
+        total = calculate_cart_total(cart_items)
+
+        total_discount = 0
+        for item in cart_items:
+            total_discount += (item.item.price - item.item.seil_price) * item.quantity
+
+        total_without_discount = 0
+        for item in cart_items:
+            total_without_discount += item.item.price * item.quantity
+
 
     elif 'cart' in request.session:
         item_ids = request.session['cart']
-        items = Item.objects.filter(id__in=item_ids)
+        cart_items = Item.objects.filter(id__in=item_ids)
 
-    total = calculate_cart_total(items)  # Вычислить общую сумму товаров в корзине
+        total_quantity = sum([1 for _ in cart_items])
+        total_discount = 0
+        total_without_discount = 0
 
-    # Вычислить общее количество товаров в корзине
-    total_quantity = items.aggregate(total_quantity=Sum('quantity'))['total_quantity'] or 0
+        for cart_item in cart_items:
+            print(cart_item)
+            total_discount += (cart_item.price - cart_item.seil_price) * 1
+            total_without_discount += cart_item.price * 1
+            total = total_without_discount - total_discount
 
-    # Вычислить общую сумму скидки на все товары
-    total_discount = items.aggregate(total_discount=Sum(F('item__price') - F('item__seil_price') * F('quantity')))['total_discount'] or 0
-
-    # Вычислить общую сумму товаров без скидки
-    total_without_discount = items.aggregate(total_without_discount=Sum(F('item__price') * F('quantity')))['total_without_discount'] or 0
 
     context = {
-        'items': items,
+        'items': cart_items,
         'title': 'Корзина',
-        'total': total,  # Добавьте общую сумму в контекст
         'total_quantity': total_quantity,
         'total_discount': total_discount,
         'total_without_discount': total_without_discount,
+        'total_with_discount': total_without_discount - total_discount,
+        'total': total,
     }
+
     return render(request, 'cart/cart.html', context)
 
+# def cart(request):
+#     items = []
+#
+#     def calculate_cart_total(cart_items):
+#         total = 0
+#         for item in cart_items:
+#             total += item.quantity * item.item.seil_price  # Используйте цену товара со скидкой (seil_price)
+#         return total
+#
+#     if request.user.is_authenticated:
+#         items = CartItem.objects.filter(user=request.user)
+#
+#     elif 'cart' in request.session:
+#         item_ids = request.session['cart']
+#         items = Item.objects.filter(id__in=item_ids)
+#
+#     total = calculate_cart_total(items)  # Вычислить общую сумму товаров в корзине
+#
+#     # Вычислить общее количество товаров в корзине
+#     total_quantity = items.aggregate(total_quantity=Sum('quantity'))['total_quantity'] or 0
+#
+#     # Вычислить общую сумму скидки на все товары
+#     total_discount = items.aggregate(total_discount=Sum(F('item__price') - F('item__seil_price') * F('quantity')))['total_discount'] or 0
+#
+#     # Вычислить общую сумму товаров без скидки
+#     total_without_discount = items.aggregate(total_without_discount=Sum(F('item__price') * F('quantity')))['total_without_discount'] or 0
+#
+#     context = {
+#         'items': items,
+#         'title': 'Корзина',
+#         'total': total,  # Добавьте общую сумму в контекст
+#         'total_quantity': total_quantity,
+#         'total_discount': total_discount,
+#         'total_without_discount': total_without_discount,
+#     }
+#     return render(request, 'cart/cart.html', context)
+
+def update_cart_quantity(request, item_id, new_quantity):
+
+
+    item = get_object_or_404(Item, pk=item_id)
+
+    # Получите или создайте объект CartItem для текущего пользователя
+    cart_item, created = CartItem.objects.get_or_create(user=request.user, item=item)
+
+    if new_quantity <= 0:
+        # Если новое количество товара равно или меньше нуля, удалите товар из корзины
+        cart_item.delete()
+    else:
+        # Обновите количество товара в корзине
+        cart_item.quantity = new_quantity
+        cart_item.save()
+
+    # Пересчитайте обновленные данные корзины
+    cart_items = CartItem.objects.filter(user=request.user)
+    total_price = calculate_cart_total(cart_items)  # Пересчитать общую стоимость корзины
+    total_quantity = cart_items.aggregate(total_quantity=Sum('quantity'))['total_quantity'] or 0  # Пересчитать общее количество товаров
+    total_discount = calculate_cart_discount(cart_items)  # Пересчитать общую сумму скидки
+    total_without_discount = calculate_cart_total_without_discount(cart_items)  # Пересчитать общую сумму товаров без скидки
+
+    # Верните обновленные данные в формате JSON
+    data = {
+        'message': 'Количество товара обновлено успешно',
+        'new_quantity': new_quantity,
+        'total_items': total_quantity,
+        'total_price': total_price,
+        'total_discount': total_discount,
+        'total_without_discount': total_without_discount,
+    }
+    return JsonResponse(data)
 
 # def toggle_cart(request, item_id):
 #     item = get_object_or_404(Item, id=item_id)

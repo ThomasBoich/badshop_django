@@ -231,6 +231,53 @@
           </div>
       </form>
       <script>
+document.addEventListener("DOMContentLoaded", function () {
+    const cartItems = document.querySelectorAll(".item");
+
+    cartItems.forEach((item) => {
+        const quantityInput = item.querySelector(".number-text");
+        const quantityMinus = item.querySelector(".number-minus");
+        const quantityPlus = item.querySelector(".number-plus");
+        const itemID = item.getAttribute("data-item-id");
+
+        quantityMinus.addEventListener("click", function (event) {
+            event.preventDefault();
+            let quantity = parseInt(quantityInput.getAttribute("data-quantity"));
+            if (quantity > 1) {
+                quantity--;
+                updateCartQuantity(itemID, quantity);
+            }
+        });
+
+        quantityPlus.addEventListener("click", function (event) {
+            event.preventDefault();
+            let quantity = parseInt(quantityInput.getAttribute("data-quantity"));
+            quantity++;
+            updateCartQuantity(itemID, quantity);
+        });
+    });
+
+    function updateCartQuantity(itemID, newQuantity) {
+        fetch(`/update_quantity/${itemID}/${newQuantity}`, { method: 'POST' })
+            .then(response => response.json())
+            .then(data => {
+                // Обновите статистику корзины в реальном времени
+                const totalItemsElement = document.querySelector("#total-items");
+                const totalPriceElement = document.querySelector("#total-price");
+                const totalDiscountElement = document.querySelector("#total-discount");
+                const totalWithoutDiscountElement = document.querySelector("#total-without-discount");
+
+                totalItemsElement.textContent = data.total_items;
+                totalPriceElement.textContent = data.total_price;
+                totalDiscountElement.textContent = data.total_discount;
+                totalWithoutDiscountElement.textContent = data.total_without_discount;
+            });
+    }
+});
+
+
+
+
         // Находим элементы формы
       var selectAllCheckbox = document.getElementById('select-all');
       var checkboxes = document.querySelectorAll('input[type=checkbox]');
