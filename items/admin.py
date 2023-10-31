@@ -15,11 +15,13 @@ class ItemAdmin(admin.ModelAdmin):
     list_display = ('name', 'price')
     list_filter = ('name', 'price')
     exclude = ('seil_price',)
+    search_fields = ('name', 'price')
 
 class CategoryAdmin(admin.ModelAdmin):
     list_display = ('title',)
     list_filter = ('title',)
     list_editable = ('title',)
+    search_fields = ('title',)
 
 
 admin.site.register(Category)

@@ -5,13 +5,14 @@ from django.contrib.sessions.models import Session  # Для неавториз�
 from django.db.models.signals import pre_save, post_save
 from django.dispatch import receiver
 
+from balance.models import PromoCode
 from users.models import CustomUser
 
 
 # Create your models here.
 class Item(models.Model):
     name = models.CharField(max_length=200, verbose_name="Название товара")
-    image = models.ImageField(unique="items/%Y/%m/%d/", blank=True, null=True, verbose_name="Изображение товара")
+    image = models.ImageField(upload_to="items/%Y/%m/%d/", blank=True, null=True, verbose_name="Изображение товара")
     price = models.IntegerField(default=0, blank=True, null=True, verbose_name="Цена товара")
     discount = models.IntegerField(default=0, blank=True, null=True, verbose_name="Скидка")
     seil_price = models.IntegerField(default=0, blank=True, null=True, verbose_name="Цена со скидкой")
@@ -103,6 +104,9 @@ class CartItem(models.Model):
     item = models.ForeignKey(Item, on_delete=models.CASCADE)
     quantity = models.PositiveIntegerField(default=1)
     date_added = models.DateTimeField(auto_now_add=True)
+    promocode = models.ForeignKey(PromoCode, on_delete=models.SET_NULL, null=True, blank=True, verbose_name='Промокод')
 
     class Meta:
         unique_together = ('user', 'item')
+        verbose_name = 'Корзина'
+        verbose_name_plural = 'Корзины'

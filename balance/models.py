@@ -1,6 +1,7 @@
 from django.contrib.auth import user_logged_in
 from django.db import models
 from django.dispatch import receiver
+from django.utils import timezone
 
 from users.models import CustomUser
 
@@ -20,6 +21,10 @@ class PromoCode(models.Model):
     class Meta:
         verbose_name = "Промокод"
         verbose_name_plural = "Промокоды"
+
+    def is_valid(self):
+        now = timezone.now()
+        return self.valid_from <= now <= self.valid_to
 
 
 class BonusWallet(models.Model):
