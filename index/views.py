@@ -63,7 +63,7 @@ def favorite(request):
 
 def get_cart_count(request):
     if request.user.is_authenticated:
-        cart_count = CartItem.objects.filter(user=request.user).count()
+        cart_count = CartItem.objects.filter(cart__user=request.user).count()
         return JsonResponse({'count': cart_count})
     else:
         session_cart = request.session.get('cart', [])
@@ -90,43 +90,47 @@ def get_favorite_count(request):
 
 # СТРАНИЦА КОРЗИНЫ
 
+
 def cart(request):
-    cart_items = []  # Используйте cart_items вместо items
-    total_quantity = 0  # Инициализируем общее количество товаров нулем
+    cart = None
+    total_quantity = 0
     total_discount = 0
     total_without_discount = 0
     total = 0
     bonus_wallet = 0
 
-
-    def calculate_cart_total(cart_items):
+    def calculate_cart_total(cart):
         total = 0
-        for item in cart_items:
-            total += item.quantity * item.item.seil_price
+        for cart_item in cart.items.all():
+            total += cart_item.quantity * cart_item.item.seil_price
         return total
 
     if request.user.is_authenticated:
-        cart_items = CartItem.objects.filter(user=request.user)
-        total_quantity = sum([item.quantity for item in cart_items])
-        total = calculate_cart_total(cart_items)
+        try:
+            cart = Cart.objects.get(user=request.user)
+            total_quantity = sum([cart_item.quantity for cart_item in cart.items.all()])
+            total = calculate_cart_total(cart)
 
-        # Получаем объект BonusWallet, связанный с текущим пользователем (предполагая, что пользователь аутентифицирован)
-        bonus_wallet = BonusWallet.objects.get(user=request.user).balance
+            # Получаем объект BonusWallet, связанный с текущим пользователем (предполагая, что пользователь аутентифицирован)
+            bonus_wallet = BonusWallet.objects.get(user=request.user).balance
 
-        total_discount = 0
-        for item in cart_items:
-            total_discount += (item.item.price - item.item.seil_price) * item.quantity
+            total_discount = 0
+            for cart_item in cart.items.all():
+                total_discount += (cart_item.item.price - cart_item.item.seil_price) * cart_item.quantity
 
-        total_without_discount = 0
-        for item in cart_items:
-            total_without_discount += item.item.price * item.quantity
+            total_without_discount = 0
+            for cart_item in cart.items.all():
+                total_without_discount += cart_item.item.price * cart_item.quantity
+        except Cart.DoesNotExist:
+            cart = None
 
 
     elif 'cart' in request.session:
         item_ids = request.session['cart']
         cart_items = Item.objects.filter(id__in=item_ids)
-
+        cart = cart_items
         total_quantity = sum([1 for _ in cart_items])
+
         if cart_items:
             total_discount = 0
         else:
@@ -143,7 +147,7 @@ def cart(request):
 
 
     context = {
-        'items': cart_items,
+        'cart': cart,
         'title': 'Корзина',
         'total_quantity': total_quantity,
         'total_discount': total_discount,
@@ -247,26 +251,102 @@ def update_cart_quantity(request, item_id, new_quantity):
 #
 #     return JsonResponse({'message': message})
 
+# def toggle_cart(request, item_id):
+#     item = get_object_or_404(Item, id=item_id)
+#     message = ''
+#
+#     if request.user.is_authenticated:
+#         try:
+#             cart = Cart.objects.get(user=request.user)
+#         except Cart.DoesNotExist:
+#             cart = Cart(user=request.user)
+#             cart.save()
+#
+#         cart_item, created = CartItem.objects.get_or_create(cart=cart, item=item)
+#         if created:
+#             message = 'Товар добавлен в корзину'
+#         else:
+#             cart_item.delete()
+#             message = 'Товар удален из корзины'
+#     else:
+#         cart = request.session.get('cart', [])
+#         if item_id not in cart:
+#             cart.append(item_id)
+#             message = 'Товар добавлен в корзину'
+#         else:
+#             cart.remove(item_id)
+#             message = 'Товар удален из корзины'
+#         request.session['cart'] = cart
+#
+#     return JsonResponse({'message': message})
 def toggle_cart(request, item_id):
-    item = get_object_or_404(Item, id=item_id)
     if request.user.is_authenticated:
-        cart_item, created = CartItem.objects.get_or_create(user=request.user, item=item)
-        if created:
-            message = 'Товар добавлен в корзину'
-        else:
-            cart_item.delete()
-            message = 'Товар удален из корзины'
+        user = request.user
+        session = None
+        try:
+            # Попробуйте найти существующую корзину для пользователя
+            cart = Cart.objects.get(user=user)
+        except Cart.DoesNotExist:
+            # Если корзина не существует, создайте новую
+            cart = Cart(user=user)
+            cart.save()
+
+        try:
+            item = Item.objects.get(id=item_id)
+
+            # Попробуйте найти CartItem с соответствующим товаром и корзиной
+            try:
+                cart_item = CartItem.objects.get(item=item, cart=cart)
+                cart.items.remove(cart_item)  # Удаляем товар из корзины
+                cart_item.delete()  # Удаляем cart_item
+                message = "Товар удален из корзины."
+            except CartItem.DoesNotExist:
+                cart_item = CartItem(item=item)
+                cart_item.save()
+                cart.items.add(cart_item)  # Добавляем товар в корзину
+                message = "Товар добавлен в корзину."
+
+        except Item.DoesNotExist:
+            return JsonResponse({'message': 'Товар не найден.'})
+
     else:
         cart = request.session.get('cart', [])
+
         if item_id not in cart:
             cart.append(item_id)
             message = 'Товар добавлен в корзину'
         else:
             cart.remove(item_id)
             message = 'Товар удален из корзины'
+
+
         request.session['cart'] = cart
 
+
     return JsonResponse({'message': message})
+
+
+
+# def toggle_cart(request, item_id):
+#     item = get_object_or_404(Item, id=item_id)
+#     if request.user.is_authenticated:
+#         cart_item, created = CartItem.objects.get_or_create(user=request.user, item=item)
+#         if created:
+#             message = 'Товар добавлен в корзину'
+#         else:
+#             cart_item.delete()
+#             message = 'Товар удален из корзины'
+#     else:
+#         cart = request.session.get('cart', [])
+#         if item_id not in cart:
+#             cart.append(item_id)
+#             message = 'Товар добавлен в корзину'
+#         else:
+#             cart.remove(item_id)
+#             message = 'Товар удален из корзины'
+#         request.session['cart'] = cart
+#
+#     return JsonResponse({'message': message})
 def toggle_favorites(request, item_id):
     item = get_object_or_404(Item, id=item_id)
     if request.user.is_authenticated:

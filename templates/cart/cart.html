@@ -2,7 +2,7 @@
 
 {% block content %}
 
-{#    sdfdsf#}
+{#sdfdsf#}
 
       <div class="cart-content">
         <form action="">
@@ -15,72 +15,17 @@
               </div>
 
 
-                    {% for item in items %}
-                        {% if request.user.is_authenticated %}
 
-
-                    <div class="cart-item">
-                      <div class="cart-img">
-                        <input type="checkbox" id="">
-                          {% if item.item.image %}
-                          	 <img src="{{item.item.image.url}}" alt="">
-                          {% endif %}
-
-                      </div>
-                      <div class="item-hover">
-                      <h2>{{ item.item.name }}</h2>
-                      <div class="del-item">
-                        <img src="static/img/X.svg" alt="">
-                      </div>
-                      <div class="item-count">
-                        <div class="number" data-step="1" data-min="1" data-max="100">
-                          <input class="number-text" type="text" name="count" value="1">
-                          <a href="#" class="number-minus">−</a>
-                          <a href="#" class="number-plus">+</a>
-                        </div>
-                        <div class="summ">
-                          {{ item.item.seil_price }} ₽ \ шт.
-                        </div>
-                      </div>
-                    </div>
-                    </div>
-
+                    {% if request.user.is_authenticated%}
+                        {% for item in cart.items.all %}
+                            {% include 'cart/cart_item.html' %}
+                        {% endfor %}
                         {% else %}
+                        {% for item in cart %}
+                            {% include 'cart/cart_item.html' %}
+                        {% endfor %}
+                    {% endif %}
 
-                    <div class="cart-item">
-                      <div class="cart-img">
-                        <input type="checkbox" id="">
-                          {% if item.image %}
-                          	 <img src="{{item.image.url}}" alt="">
-                          {% endif %}
-
-                      </div>
-                      <div class="item-hover">
-                      <h2>{{ item.name }}</h2>
-                      <div class="del-item">
-                        <img src="static/img/X.svg" alt="">
-                      </div>
-                      <div class="item-count">
-                        <div class="number" data-step="1" data-min="1" data-max="100">
-                          <input class="number-text" type="text" name="count" value="1">
-                          <a href="#" class="number-minus">−</a>
-                          <a href="#" class="number-plus">+</a>
-                        </div>
-                        <div class="summ">
-                          {{ item.seil_price }} ₽ \ шт.
-                        </div>
-                      </div>
-                    </div>
-                    </div>
-
-
-
-
-
-                        {% endif %}
-
-
-{% endfor %}
 
 
 

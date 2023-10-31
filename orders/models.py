@@ -11,7 +11,7 @@ from users.models import CustomUser, Address
 class Order(models.Model):
     user = models.ForeignKey(CustomUser, on_delete=models.CASCADE, verbose_name='Пользователь', blank=True, null=True)
     session = models.ForeignKey(Session, on_delete=models.CASCADE, blank=True, null=True)
-    items = models.ManyToManyField(CartItem, verbose_name='Корзина', blank=True, null=True)
+    items = models.ManyToManyField(CartItem, verbose_name='Корзина')
     total_price = models.IntegerField(verbose_name='Сумма заказа', blank=True, null=True)  # Общая сумма заказа
     date_created = models.DateTimeField(auto_now_add=True)
     comment = models.CharField(max_length=240, blank=True, null=True, verbose_name='Комментарий к заказу')

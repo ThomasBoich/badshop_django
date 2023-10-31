@@ -165,3 +165,6 @@ CSRF_TRUSTED_ORIGINS=["http://vitanow.ru","https://vitanow.ru"]
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 GRAPPELLI_ADMIN_TITLE = "BADSHOP ADMIN"
 GRAPPELLI_CLEAN_INPUT_TYPES = False
+# SESSION_ENGINE = 'django.contrib.sessions.backends.db'
+SESSION_ENGINE = 'django.contrib.sessions.backends.db'  # Используем базу данных для хранения сессий
+SESSION_COOKIE_AGE = 1209600  # Время жизни сессии (в секундах)

@@ -11,6 +11,7 @@ from users.models import CustomUser
 
 # Create your models here.
 class Item(models.Model):
+
     name = models.CharField(max_length=200, verbose_name="Название товара")
     image = models.ImageField(upload_to="items/%Y/%m/%d/", blank=True, null=True, verbose_name="Изображение товара")
     price = models.IntegerField(default=0, blank=True, null=True, verbose_name="Цена товара")
@@ -90,7 +91,7 @@ class Brend(models.Model):
 
 class FavoriteItem(models.Model):
     user = models.ForeignKey(CustomUser, blank=True, null=True, on_delete=models.CASCADE)
-    session = models.ForeignKey(Session, blank=True, null=True, on_delete=models.CASCADE)
+    session = models.ForeignKey(Session, on_delete=models.CASCADE, blank=True, null=True,)
     item = models.ForeignKey(Item, on_delete=models.CASCADE)
     date_added = models.DateTimeField(auto_now_add=True)
 
@@ -100,16 +101,37 @@ class FavoriteItem(models.Model):
 
 class CartItem(models.Model):
     user = models.ForeignKey(CustomUser, blank=True, null=True, on_delete=models.CASCADE)
-    session = models.ForeignKey(Session, blank=True, null=True, on_delete=models.CASCADE)
-    item = models.ForeignKey(Item, on_delete=models.CASCADE)
-    quantity = models.PositiveIntegerField(default=1)
+    session = models.ForeignKey(Session, on_delete=models.CASCADE, blank=True, null=True,)
+    item = models.ForeignKey(Item, on_delete=models.CASCADE, blank=True, null=True, )
+    quantity = models.PositiveIntegerField(default=1, blank=True, null=True)
     date_added = models.DateTimeField(auto_now_add=True)
-    promocode = models.ForeignKey(PromoCode, on_delete=models.SET_NULL, null=True, blank=True, verbose_name='Промокод')
+    # promocode = models.ForeignKey(PromoCode, on_delete=models.SET_NULL, null=True, blank=True, verbose_name='Промокод')
 
     class Meta:
         unique_together = ('user', 'item')
+        verbose_name = 'Товар корзины'
+        verbose_name_plural = 'Товары корзины'
+
+    def __str__(self):
+        return self.item.name
+
+
+class Cart(models.Model):
+    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE, blank=True, null=True,)
+    session = models.ForeignKey(Session, on_delete=models.CASCADE, blank=True, null=True,)
+    items = models.ManyToManyField(CartItem, verbose_name='Товары в корзине')  # Множество элементов корзины
+    promocode = models.ForeignKey(PromoCode, on_delete=models.SET_NULL, null=True, blank=True, verbose_name='Промокод')
+
+    def calculate_total_price(self):
+        total_original_price = sum(item.item.price for item in self.items.all())
+        total_discount = sum(item.item.discount for item in self.items.all())
+        if self.promocode:
+            total_discount += total_original_price * (self.promocode.discount_percent / 100)
+        return total_original_price - total_discount
+
+
+    class Meta:
         verbose_name = 'Корзина'
         verbose_name_plural = 'Корзины'
 
-    def __str__(self):
-        return self.user
+
