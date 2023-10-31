@@ -374,7 +374,7 @@ def index(request):
 
     if request.user.is_authenticated:
         # Если пользователь авторизован, получаем товары из базы данных
-        cart_item_ids = CartItem.objects.filter(user=request.user).values_list('item_id', flat=True)
+        cart_item_ids = CartItem.objects.filter(cart__user=request.user).values_list('item_id', flat=True)
         cart_items = list(cart_item_ids)
         favorite_items_ids = FavoriteItem.objects.filter(user=request.user).values_list('item_id', flat=True)
         favorite_items = list(favorite_items_ids)
@@ -415,7 +415,7 @@ def catalog_page(request, category_id):
     category = categories.get(id=category_id)
     if request.user.is_authenticated:
         # Если пользователь авторизован, получаем товары из базы данных
-        cart_item_ids = CartItem.objects.filter(user=request.user).values_list('item_id', flat=True)
+        cart_item_ids = CartItem.objects.filter(cart__user=request.user).values_list('item_id', flat=True)
         cart_items = list(cart_item_ids)
         favorite_items_ids = FavoriteItem.objects.filter(user=request.user).values_list('item_id', flat=True)
         favorite_items = list(favorite_items_ids)
@@ -446,7 +446,7 @@ def filter(request, category_id=None, items_id=None):
 
     if request.user.is_authenticated:
         # Если пользователь авторизован, получаем товары из базы данных
-        cart_item_ids = CartItem.objects.filter(user=request.user).values_list('item_id', flat=True)
+        cart_item_ids = CartItem.objects.filter(cart__user=request.user).values_list('item_id', flat=True)
         cart_items = list(cart_item_ids)
         favorite_items_ids = FavoriteItem.objects.filter(user=request.user).values_list('item_id', flat=True)
         favorite_items = list(favorite_items_ids)
@@ -549,7 +549,7 @@ def filter(request, category_id=None, items_id=None):
 def item(request, item_id):
     if request.user.is_authenticated:
         # Если пользователь авторизован, получаем товары из базы данных
-        cart_item_ids = CartItem.objects.filter(user=request.user).values_list('item_id', flat=True)
+        cart_item_ids = CartItem.objects.filter(cart__user=request.user).values_list('item_id', flat=True)
         cart_items = list(cart_item_ids)
         favorite_items_ids = FavoriteItem.objects.filter(user=request.user).values_list('item_id', flat=True)
         favorite_items = list(favorite_items_ids)
