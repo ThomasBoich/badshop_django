@@ -4,7 +4,15 @@
 
 {#sdfdsf#}
 
+
       <div class="cart-content">
+      <nav>
+      <div class="breadcrumbs">
+        <a href="/">Главная »</a>
+        <a href="/cart/">Корзина</a>
+      </div>
+    </nav>
+        <h1 style="margin: 0px 0px 20px 0px">{{ title }}</h1>
         <form action="">
 
         <div class="cart-items">
@@ -249,9 +257,10 @@ document.addEventListener("DOMContentLoaded", function () {
 	padding: 0;
 	width: 140px;
 	display: inline-block;
-  border: 1px solid #00b44e;
-  border-radius: 5px;
+  border: none;
+  border-radius: 20px;
   margin: 0px 20px 0px 0px;
+        background: #edf0f2;
 }
 .number-minus, .number-plus {
 	position: absolute;
@@ -282,7 +291,7 @@ document.addEventListener("DOMContentLoaded", function () {
 	height: 32px;
 	padding: 0;
 	margin: 0 0 0 42px;
-	background: #fff;
+	background: inherit;
 	outline: none;
 	border: none;
 	width: 57px;

@@ -367,10 +367,10 @@ img {
 
 .item-content a h2 {
     margin: 0px 0px 12px 0px;
-    font-size: 20px;
+    font-size: 15px;
     font-weight: 500;
     height: auto;
-    max-height: 3.5em; /* Высота блока в 3 строки */
+    max-height: 2.5em; /* Высота блока в 3 строки */
     overflow: hidden; /* Скрытие текста, превышающего высоту блока */
     text-overflow: ellipsis; /* Добавление многоточия для обрезанного текста */
     /* white-space: nowrap; Запрет переноса текста на новую строку */
@@ -436,10 +436,12 @@ img {
     left: 8%;
     top: 8%;
     background-color: #00B44E;
+    background-color: #f1232e;
     color: #FFFFFF;
     font-size: 16px;
     border-radius: 20px;
     padding: 5px 15px 5px 15px;
+    font-weight: 500;
     text-align: center;
     display: flex;
     align-items: center;
@@ -513,7 +515,7 @@ img {
     align-items: center;
     justify-content: flex-start;
     color: #24439C;
-    font-size: 20px;
+    font-size: 18px;
     font-weight: 700;
     min-width: max-content;
     width: max-content;
@@ -1373,12 +1375,13 @@ form.subscribes-form button:hover {
 
 .cart-hover {
     width: 100%;
-    border: 1px solid #00B44E;
-    border-radius: 15px;
-    padding: 8px 20px 8px 20px;
+    border: none;
+    border-radius: 0px;
+    padding: 8px 20px 25px 20px;
     height: fit-content;
     margin: 0px 0px 20px 0px;
     align-items: center;
+    border-bottom: 1px solid #e1e1e1;
 }
 
 .cart-hover input {
@@ -1389,6 +1392,7 @@ form.subscribes-form button:hover {
     display: flex;
     flex-direction: column;
     width: 100%;
+    padding: 20px 0px 0px 0px;
 }
 
 .cart {
@@ -1418,6 +1422,9 @@ form.subscribes-form button:hover {
 .cart-items {
     display: flex;
     flex-direction: row;
+    box-shadow: 0 8px 24px 0 rgb(8 9 112 / 9%);
+    border-radius: 20px;
+    padding: 0px 0px 0px 20px;
 }
 
 .cart-img {
@@ -1433,11 +1440,12 @@ form.subscribes-form button:hover {
 
 .cart-item {
     display: flex;
-    border: 1px solid #00B44E;
-    border-radius: 15px;
+    border: none;
+    border-radius: 0px;
     padding: 20px 20px 20px 20px;
     margin: 0px 0px 20px 0px;
     width: 100%;
+    border-bottom: 1px solid #e1e1e1;
 }
 
 .cart-item h2 {
@@ -1472,8 +1480,8 @@ form.subscribes-form button:hover {
 
 .cart-info {
     padding: 20px 20px 20px 20px;
-    border-radius: 15px;
-    border: 1px solid #00B44E;
+    border-radius: 0px;
+    border: none;
     width: 378px;
     min-width: 378px;
     display: flex;
@@ -2183,8 +2191,8 @@ input[type=range]::-ms-thumb {
         padding: 0 !IMPORTANT;
         width: 75px !IMPORTANT;
         display: inline-block !IMPORTANT;
-        border: 1px solid #00b44e !IMPORTANT;
-        border-radius: 5px !IMPORTANT;
+        border: none !IMPORTANT;
+        border-radius: 20px !IMPORTANT;
         margin: 0px 12px 0px 0px !IMPORTANT;
         margin-top: 0px !IMPORTANT;
         margin-right: 12px !IMPORTANT;
@@ -2226,8 +2234,8 @@ input[type=range]::-ms-thumb {
 
     .cart-item {
         display: flex;
-        border: 1px solid #00B44E;
-        border-radius: 15px;
+        border: none;
+        border-radius: 0px;
         padding: 20px 0px 0px 20px;
         margin: 0px 0px 20px 0px;
         width: 100%;
@@ -2766,12 +2774,13 @@ input[type=range]::-ms-thumb {
     .cart-items {
         display: flex;
         flex-direction: column;
+        padding: 0px 0px 0px 0px;
     }
 
     .cart-info {
         padding: 20px 20px 20px 20px;
         border-radius: 15px;
-        border: 1px solid #00B44E;
+        border: none;
         width: 100%;
         min-width: auto;
         display: flex;
