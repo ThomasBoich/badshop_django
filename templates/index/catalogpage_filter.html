@@ -56,7 +56,7 @@
 
                 </div>
                 <a href="{% url 'item' item.id %}">
-                  <img src="{{item.image.url}}" class="image-item" alt="">
+                  <img src="{% if item.image %}{{item.image.url}}{% endif %}" class="image-item" alt="">
                 </a>
               </div>
               <a href="{% url 'item' item.id %}">
