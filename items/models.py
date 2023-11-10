@@ -24,6 +24,10 @@ class Item(models.Model):
     category = models.ForeignKey('Category', blank=True, null=True, on_delete=models.CASCADE, verbose_name="Категория")
     brend = models.ForeignKey('Brend', blank=True, null=True, on_delete=models.CASCADE, verbose_name="Бренд")
 
+    bonus_percentage = models.DecimalField(max_digits=5, decimal_places=2, default=15, verbose_name="Процент бонусных баллов", blank=True, null=True)
+
+    def calculate_bonus_points(self, purchase_amount):
+        return int((self.bonus_percentage / 100) * purchase_amount)
     class Meta:
         verbose_name = "Товар"
         verbose_name_plural = "Товары"
