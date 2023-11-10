@@ -1395,6 +1395,8 @@ form.subscribes-form button:hover {
     padding: 20px 0px 0px 0px;
 }
 
+.cart-list .cart-item:last-child{border-bottom: none;}
+
 .cart {
     max-width: 1262px;
     margin: auto auto 90px;
@@ -1676,12 +1678,13 @@ form.subscribes-form button:hover {
 }
 
 .item-actions {
-    border: 1px solid #00B44E;
+    border: none;
     border-radius: 25px;
     padding: 20px 20px 20px 20px;
     box-sizing: border-box;
     height: fit-content;
     width: 400px;
+    box-shadow: 0 8px 24px 0 rgb(6 7 8 / 9%);
 }
 
 .item-img.categoties-item {
