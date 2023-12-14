@@ -1,0 +1,404 @@
+{% extends 'default.html' %}{% load static %}
+
+{% block content %}
+
+      <div class="cart-content">
+      <nav>
+      <div class="breadcrumbs">
+        <a href="/">Главная »</a>
+        <a href="/order/">Оформление заказа</a>
+      </div>
+    </nav>
+        <h1 style="margin: 0px 0px 20px 0px">{{ title }}</h1>
+
+
+        <form action="" style="display: flex;box-shadow: 0 8px 24px 0 rgb(8 9 112 / 9%);border-radius: 20px;padding:0px 0px 60px 0px;">
+
+            <div class="cart-items" style="min-height: 700px;box-shadow: none;">
+            <div class="order-list">
+             <div class="cart-list">
+
+             <!------
+             ТРАСПОРТНЫЕ КОМПАНИИ
+             ----->
+
+                 <div class="transport-company">
+                    {% for item in transport_companies %}
+                        <div class="form_radio_btn">
+                        <input id="radio-{{ item.id }}" type="radio" name="radio" value="{{ item.id }}" checked>
+                        <label for="radio-{{ item.id }}">{{item.name}}</label>
+                    </div>
+                    {% endfor %}
+{#                     <div class="form_radio_btn">#}
+{#                        <input id="radio-1" type="radio" name="radio" value="1" checked>#}
+{#                        <label for="radio-1">Доставка курьером по СПБ</label>#}
+{#                    </div>#}
+{##}
+{#                    <div class="form_radio_btn">#}
+{#                        <input id="radio-2" type="radio" name="radio" value="2">#}
+{#                        <label for="radio-2">Самовывоз СПБ</label>#}
+{#                    </div>#}
+{##}
+{#                    <div class="form_radio_btn">#}
+{#                        <input id="radio-3" type="radio" name="radio" value="3">#}
+{#                        <label for="radio-3">СДЭК</label>#}
+{#                    </div>#}
+{##}
+{#                    <div class="form_radio_btn">#}
+{#                        <input id="radio-4" type="radio" name="radio" value="4">#}
+{#                        <label for="radio-4">Почта РФ</label>#}
+{#                    </div>#}
+{#                                           <div class="form_radio_btn">#}
+{#                        <input id="radio-5" type="radio" name="radio" value="5">#}
+{#                        <label for="radio-5">Boxberry</label>#}
+{#                    </div>#}
+{##}
+{#                    <div class="form_radio_btn">#}
+{#                        <input id="radio-6" type="radio" name="radio" value="6">#}
+{#                        <label for="radio-6">Яндекс.Доставка</label>#}
+{#                    </div>#}
+                   </div>
+
+
+                   <!-------
+                   АДРЕСА
+                   -------->
+
+                   <div class="adress-nav">
+                          <div class="adress-title">Адрес доставки</div>
+                          <div class="new-adress" id="openModalButton" style="padding: 9px 0px 9px 20px;color: #00b44e;background: inherit;" data-toggle="modal" data-target="#addAddressModal">Добавить адрес</div>
+                   </div>
+                        {% if address %}
+
+                        {% for ad in address %}
+                            <div class="adress">
+                            <div class="item-adress-title">
+                                <div class="address_info">{{ ad.street }} {{ ad.home_number }}, {{ ad.room_number }}</div>
+
+                                <div class="drop-down-address-actions">
+
+                                    <div class="drop-down-address-actions">
+
+                                    </div>
+                                    <label class="dropdown">
+
+                                      <div class="dd-button">
+                                            <img src="{% static 'img/address.svg' %}" alt="">
+                                      </div>
+
+                                      <input type="checkbox" class="dd-input" id="test">
+
+                                      <ul class="dd-menu">
+                                        <li><a href="{% url 'edit_myaddress' ad.id %}">Изменить</a></li>
+                                        <li><a href="{% url 'delete_address' ad.id %}">Удалить</a></li>
+                                      </ul>
+
+                                    </label>
+                                </div>
+                            </div>
+                            </div>
+                        {% endfor %}
+
+                        {% else %}
+                            <div class="adress">
+                              <div class="item-adress-title" style="justify-content: flex-start;">
+                              <img src="{% static '/img/warning 1.svg' %}" alt="">Нет адресов
+                            </div>
+                            </div>
+
+                        {% endif %}
+
+
+
+                <!-----
+                КОММЕНТАРИЙ
+                ----->
+
+                  <div class="comment">
+                      <p style="margin: 0px 0px 20px 0px;">Комментарий курьеру </p>
+                    <input type="text" style="border: 1px solid #999999;" placeholder="Оставьте комментарий к заказу">
+                  </div>
+
+
+             <!--------
+             ПОКУПАТЕЛЬ
+             -------->
+
+            <h2>Покупатель</h2>
+             <div class="order-user">
+             <div class="user-input">
+              <p>Фамилия</p>
+                <input type="text" name="first_name" maxlength="100" id="id_first_name">
+            </div>
+                    <div class="user-input">
+              <p>Имя</p>
+                <input type="text" name="last_name" maxlength="100" id="id_last_name">
+            </div>
+                    <div class="user-input">
+              <p>Отчество</p>
+          <input type="text" name="patronymic" maxlength="100" id="id_patronymic">
+            </div>
+            <div class="user-input">
+              <p>E-mail</p>
+              <input type="email" name="email" value="root@root.root" maxlength="254" id="id_email">
+            </div>
+            <div class="user-input">
+              <p>Телефон</p>
+            <input type="text" name="phone" maxlength="24" id="id_phone">
+            </div>
+             </div>
+
+                <!------
+                ПРОМОКОД
+                ----->
+
+                <h2 style="margin: 0px 0px 20px 0px;font-size: 24px;font-weight: 600;">Промокод</h2><div class="promo">
+
+                <input type="text" placeholder="Введите промокод">
+                <button style="    width: 100%;
+                border-radius: 35px;
+                background-color: #00B44E;
+                color: #FFFFFF;
+                text-align: center;
+                border: none;
+                padding: 20px 20px 20px 20px;
+                font-weight: 700;
+                cursor: pointer;border-radius: 0px 15px 15px 0px;max-width: 200px;">ПРИМЕНИТЬ</button>
+               </div>
+
+
+
+            <!--------
+            БОНУСЫ
+            ------->
+
+              <div class="bonus-pay">
+                <div class="bonus">
+                  <input type="checkbox">
+                  <label for="">Оплатить бонусами</label>
+                </div>
+                <p>Доступно {{balance}} бонусов</p>
+              </div>
+
+
+                <button type="submit" class="order-button">ОФОРМИТЬ ЗАКАЗ</button>
+        </div>
+
+            
+</div>
+          </div>
+
+
+
+            <div class="cart-info">
+                <h2>Ваш заказ</h2>
+              <div class="cart-price">
+                <div class="count">
+                  <span>
+                    Товары( {{ total_quantity }} )
+                  </span>
+                </div>
+                <div class="sail">
+                  Скидка <span>{{ total_discount }} ₽</span>
+                </div>
+                  <div class="bonus-total">
+                      Бонусы
+                  </div>
+                <div class="summa">
+                  Итого <span>{{ total }} ₽</span>
+                </div>
+              </div>
+            </div>
+      </form>
+
+      <script>
+document.addEventListener("DOMContentLoaded", function () {
+    const cartItems = document.querySelectorAll(".item");
+
+    cartItems.forEach((item) => {
+        const quantityInput = item.querySelector(".number-text");
+        const quantityMinus = item.querySelector(".number-minus");
+        const quantityPlus = item.querySelector(".number-plus");
+        const itemID = item.getAttribute("data-item-id");
+
+        quantityMinus.addEventListener("click", function (event) {
+            event.preventDefault();
+            let quantity = parseInt(quantityInput.getAttribute("data-quantity"));
+            if (quantity > 1) {
+                quantity--;
+                updateCartQuantity(itemID, quantity);
+            }
+        });
+
+        quantityPlus.addEventListener("click", function (event) {
+            event.preventDefault();
+            let quantity = parseInt(quantityInput.getAttribute("data-quantity"));
+            quantity++;
+            updateCartQuantity(itemID, quantity);
+        });
+    });
+
+    function updateCartQuantity(itemID, newQuantity) {
+        fetch(`/update_quantity/${itemID}/${newQuantity}`, { method: 'POST' })
+            .then(response => response.json())
+            .then(data => {
+                // Обновите статистику корзины в реальном времени
+                const totalItemsElement = document.querySelector("#total-items");
+                const totalPriceElement = document.querySelector("#total-price");
+                const totalDiscountElement = document.querySelector("#total-discount");
+                const totalWithoutDiscountElement = document.querySelector("#total-without-discount");
+
+                totalItemsElement.textContent = data.total_items;
+                totalPriceElement.textContent = data.total_price;
+                totalDiscountElement.textContent = data.total_discount;
+                totalWithoutDiscountElement.textContent = data.total_without_discount;
+            });
+    }
+});
+
+
+
+
+        // Находим элементы формы
+      var selectAllCheckbox = document.getElementById('select-all');
+      var checkboxes = document.querySelectorAll('input[type=checkbox]');
+
+      // Привязываем обработчик события "click" к флажку "выбрать все"
+      selectAllCheckbox.addEventListener('click', function(event) {
+      // Обходим все элементы формы с флажком checkbox
+      for(var i = 0; i < checkboxes.length; i++) {
+      // Устанавливаем свойство "checked" для всех элементов формы с флажком
+      checkboxes[i].checked = selectAllCheckbox.checked;
+      }
+      });
+      </script>
+      </div>
+    </div>
+
+
+
+      <style type="text/css">
+.dropdown {
+  display: inline-block;
+  position: relative;
+}
+
+.dd-button {
+
+}
+
+.dd-button:after {
+
+}
+
+.dd-button:hover {
+    opacity: 0.9;
+    cursor: pointer;
+}
+
+
+.dd-input {
+  display: none;
+}
+
+.dd-menu {
+  position: absolute;
+  top: 100%;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  padding: 0;
+  margin: 2px 0 0 0;
+  box-shadow: 0 0 6px 0 rgba(0,0,0,0.1);
+  background-color: #ffffff;
+  list-style-type: none;
+    z-index: 9;
+    right: 0%;
+}
+
+.dd-input + .dd-menu {
+  display: none;
+}
+
+.dd-input:checked + .dd-menu {
+  display: block;
+}
+
+.dd-menu li {
+  padding: 10px 20px;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.dd-menu li:hover {
+  background-color: #f6f6f6;
+}
+
+.dd-menu li a {
+  display: block;
+  margin: -10px -20px;
+  padding: 10px 20px;
+}
+
+.dd-menu li.divider{
+  padding: 0;
+  border-bottom: 1px solid #cccccc;
+}
+          .user-input input{
+              border: 2px solid #00B44E;
+    border-radius: 25px;
+    padding: 20px 20px 20px 20px;
+    width: 100%;
+    font-size: 20px;
+    box-sizing: border-box;
+          }
+    .number {
+	user-select: none;
+	position: relative;
+	text-align: left;
+	padding: 0;
+	width: 140px;
+	display: inline-block;
+  border: none;
+  border-radius: 20px;
+  margin: 0px 20px 0px 0px;
+        background: #edf0f2;
+}
+.number-minus, .number-plus {
+	position: absolute;
+	top: 0;
+	width: 40px;
+	height: 32px;
+	line-height: 32px;
+	display: block;
+	font-size: 20px;
+	font-weight: 600;
+	text-align: center;
+	font-family: arial;
+  color: #CCCCCC;
+	text-decoration: none;
+}
+.number-minus {
+	left: 0;
+}
+.number-plus {
+	right: 0;
+}
+
+.number-text{
+	display: inline-block;
+	font-size: 14px;
+	color: #000;
+	line-height: 32px;
+	height: 32px;
+	padding: 0;
+	margin: 0 0 0 42px;
+	background: inherit;
+	outline: none;
+	border: none;
+	width: 57px;
+	text-align: center;
+}
+  </style>
+
+
+{% endblock %}

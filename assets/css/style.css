@@ -862,6 +862,93 @@ img {
     padding: 25px 25px 25px 25px;
 }
 
+.transport-company{
+    display: block;
+    width: 100%;
+}
+
+.item-company{
+    display: flex;
+    align-items: center;
+    width: 45%;
+    float: left;
+    padding: 20px 20px 20px 20px;
+    border-radius: 20px;
+    border: #00b44e solid 1px;
+    margin: 0px 2% 2% 0px;
+}
+.item-company input{
+    margin: 0px 12px 0px 0px;
+}
+
+
+
+
+
+
+
+.order-list{
+    display: 100%;
+    margin: 0 auto;display: flex;flex-direction: column;
+    position: relative;
+}
+
+.form_radio_btn {
+	display: inline-flex;
+	margin-right: 8px;
+    width: 48%;
+    float: left;
+    margin: 0% 2% 2% 0%;
+    position: relative;
+    align-items: center;
+}
+.form_radio_btn input[type=radio] {
+	/*display: none;*/
+    position: absolute;
+    left: 22px;
+}
+.form_radio_btn label {
+	display: inline-block;
+	cursor: pointer;
+	padding: 0px 15px;
+	line-height: 34px;
+	border: 1px solid #999;
+	border-radius: 20px;
+	user-select: none;
+    width: 90%;
+    padding: 12px 12px 12px 49px;
+    font-weight: 700;
+}
+
+/* Checked */
+.form_radio_btn input[type=radio]:checked + label {
+	background: #ffe0a6;
+    background: #00b44e24;
+    border-color: #00b44e;
+}
+
+/* Hover */
+.form_radio_btn label:hover {
+	color: #666;
+}
+
+/* Disabled */
+.form_radio_btn input[type=radio]:disabled + label {
+	background: #efefef;
+	color: #666;
+}
+
+.order-button{
+    width: 100%;
+    border-radius: 35px;
+    background-color: #00B44E;
+    color: #FFFFFF;
+    text-align: center;
+    border: none;
+    padding: 20px 20px 20px 20px;
+    font-weight: 700;
+    cursor: pointer;
+}
 .news-content img {
     margin: 20px 0px 20px 0px;
 }

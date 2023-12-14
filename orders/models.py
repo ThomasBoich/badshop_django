@@ -61,3 +61,13 @@ class AppliedPromoCode(models.Model):
     class Meta:
         verbose_name = 'Примененный промокод'
         verbose_name_plural = 'Примененные промокоды'
+
+class TransportCompany(models.Model):
+    name = models.CharField(max_length=255, verbose_name='Название организации')
+
+    class Meta:
+        verbose_name = 'Транспортная компания'
+        verbose_name_plural = 'Транспортные компании'
+
+    def __str__(self):
+        return self.name

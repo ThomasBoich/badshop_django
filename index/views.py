@@ -4,6 +4,7 @@ from django.views import View
 from django.db.models import Q, Min, Max, F, Sum
 
 from balance.models import BonusWallet
+from orders.models import TransportCompany
 from users.forms import UserUpdateForm, AddressForm, AddressEditForm, CustomUserSetPasswordForm
 from items.models import *
 from users.models import Address
@@ -159,6 +160,26 @@ def cart(request):
 
     return render(request, 'cart/cart.html', context)
 
+def order(request):
+
+    if request.method == 'POST':
+        address_form = AddressForm(request.POST, initial={'user': request.user})
+        if address_form.is_valid():
+            address_form.save()
+            return redirect('myadress')  # Перенаправление на список адресов после успешного сохранения
+    else:
+        address_form = AddressForm(initial={'user': request.user})
+        address = Address.objects.filter(users=request.user)
+
+    context = {
+        'title': 'Оформление заказа',
+        'address': address,
+        'address_count': address.count(),
+        'address_form': address_form,
+        'transport_companies': TransportCompany.objects.all()
+    }
+
+    return render(request, 'cart/order.html', context)
 
 # ФИЛЬТРАЦИЯ КАТАЛОГА
 def filter(request, category_id=None, items_id=None):
